@@ -1,0 +1,48 @@
+<section id="comments">
+<div id="valine_thread" style="margin: 30px;"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        
+</section>
+<!-- <%- js('//cdn1.lncld.net/static/js/3.0.4/av-min.js') %>
+<%- js('//unpkg.com/valine/dist/Valine.min.js') %> -->
+<script>
+    // var AV = require('//cdn1.lncld.net/static/js/3.0.4/av-min.js');
+    // var Valine = require('//unpkg.com/valine/dist/Valine.min.js');
+    var valine;
+    var notify;
+    var verify;
+    var guest_info;
+    var GUEST_INFO;
+    // require(["//cdn1.lncld.net/static/js/3.0.4/av-min.js","//unpkg.com/valine/dist/Valine.min.js"], function(AV,Valine) {
+        
+        GUEST_INFO = ['nick','mail','link'];
+        guest_info = '<%= theme.valine.guest_info %>'.split(',').filter(function(item){
+            return GUEST_INFO.indexOf(item) > -1
+        });
+        notify = '<%= theme.valine.notify %>' == true;
+        verify = '<%= theme.valine.verify %>' == true;
+
+        valine = new Valine();
+        // debugger;
+        // valine.init({
+        //     el:'#valine_thread',
+        //     appId: '<%= theme.valine.appId %>',
+        //     appKey: '<%= theme.valine.appKey %>'
+        // })
+
+        valine.init({
+            el: '#valine_thread',
+            notify: notify,
+            verify: verify,
+            appId: "<%= theme.valine.appId %>",
+            appKey: "<%= theme.valine.appKey %>",
+            placeholder: "<%= theme.valine.placeholder %>",
+            pageSize:'<%= theme.valine.pageSize %>',
+            avatar:'<%= theme.valine.avatar %>',
+            lang:'<%= theme.valine.lang %>'
+        })
+        console.log(valine);
+    // });
+        
+</script>

@@ -1,0 +1,15 @@
+<%- js('js/main') %>
+<%- partial('_partial/background') %>
+<%- partial('analytics/google-analytics') %>
+<%- partial('analytics/baidu-analytics') %>
+<% if (theme.mathjax){ %>
+<%- partial('mathjax') %>
+<% } %>
+<%- partial('scrolling-button') %>
+<%- partial('_partial/hide-labels') %>
+<%- js('//cdn.bootcss.com/jquery/1.11.1/jquery.min.js') %>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<% if (theme.TipTitle){ %>
+  <%- partial('post/TipTitle') %>
+<% } %>

@@ -1,0 +1,91 @@
+<style>
+    .article-meta {
+        display: none;
+    }
+    #container .article .article-title {
+        padding-right: 0;
+    }
+    .article-header {
+        padding: 0;
+        padding-top: 26px;
+        border-left: none;
+        text-align: center;
+    }
+    .article-header:hover {
+        border-left: none;
+    }
+    .article-title {
+        font-size: 1.6em
+    }
+    .article-meta {
+        display: none;
+    }
+    .article-entry hr {
+        margin: 0;
+    }
+    #container .article-info-post.article-info {
+      display: none;
+      }
+    #container .article .article-title {
+    padding: 0;
+    }
+</style>
+
+<% if (page.path === "tags/index.html"){ %>
+    <!-- Tag Cloud Page -->
+    <hr>
+    <br>
+
+    <p class="count"></p>
+    <div class="tags">
+        <%- tagcloud({
+            min_font: 20, 
+            max_font: 40, 
+            amount: 40, 
+            color: true, 
+            start_color: 'gray', 
+            end_color: 'white'
+        }) %>
+    </div>
+    <style>
+        .article-entry ul li:before{
+            display: none;
+        }
+        .article-inner  {
+            text-align: center;
+        }
+        .tags {
+            max-width: 40em;
+            margin: 2em auto;
+            margin-top: 0em;
+            min-height: 20em;
+        }
+        .tags a {
+            margin-right: 1em;
+            line-height: 65px;
+            border-bottom: 1px solid gray;
+            white-space: nowrap;
+        }
+        .tags a:hover {
+            border-bottom: 2px solid black;
+            text-decoration: none;
+            font-style: italic;
+        }
+        #count > span {
+            margin: auto .2em;
+            font-weight: bold;
+        }
+    </style>
+
+
+<% } %>
+<% if (page.path === "categories/index.html"){ %>
+
+    <% if (site.categories.length){ %>
+    <div class="widget tag">
+         <%- list_categories(site.categories) %> 
+    </div>
+    <% } %>
+
+
+<% } %>
