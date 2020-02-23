@@ -1,5 +1,5 @@
 ---
-title: 2019HCTF-share
+title: 2018HCTF-share
 comments: true
 date: 2018-11-13 07:53:00 
 tags:
@@ -32,9 +32,7 @@ keywords:
 >
 > hint2:
 >
-> ```erb
-> <%= render template: "home/"+params[:page] %>
-> ```
+> ` <%= render template: "home/"+params[:page] %> `
 >
 > in root_path
 >
