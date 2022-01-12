@@ -32,6 +32,7 @@ jobs:
       with:
         deploy_key: ${{ secrets.DEPLOY_KEY }}
         user_name: 5am3
+        user_email: i@5am3.com
         else_config: ${{ secrets.ELSE_CONFIG }}
     # Use the output from the `deploy` step(use for test action)
     - name: Get the output
