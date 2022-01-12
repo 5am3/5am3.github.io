@@ -32,12 +32,7 @@ jobs:
       with:
         deploy_key: ${{ secrets.DEPLOY_KEY }}
         user_name: 5am3
-        CHANGYAN_APPID: ${{ secrets.CHANGYAN_APPID }}
-        CHANGYAN_CONF: ${{ secrets.CHANGYAN_CONF }}
-        VALINE_APPID: ${{ secrets.VALINE_APPID }}
-        VALINE_APPKEY: ${{ secrets.VALINE_APPKEY }}
-        GITMENT_CLIENT_ID: ${{ secrets.GITMENT_CLIENT_ID }}
-        GITMENT_CLIENT_SECRET: ${{ secrets.GITMENT_CLIENT_SECRET }}
+        else_config: ${{ secrets.ELSE_CONFIG }}
     # Use the output from the `deploy` step(use for test action)
     - name: Get the output
       run: |
