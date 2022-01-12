@@ -74,7 +74,7 @@ deploy:
   type: git
   repo: git@github.com:5am3/5am3.github.io.git
   # repo: https://git.coding.net/i_5am3/i_5am3.coding.me.git
-  branch: master
+  branch: gh-pages
 
 live2d:
   model: tororo
