@@ -82,14 +82,3 @@ live2d:
   right: 50
   bottom_s: -50
   right_s: 0
-
-# google_analytics: xxx
-# baidu_analytics: xxxxxxx
-disqus:
-  on: false
-  shortname: xxxx
-# 畅言评论
-changyan:
-  on: false
-  appid: xxxx
-  conf: xxxxx
