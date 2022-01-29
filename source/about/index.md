@@ -8,26 +8,28 @@ comments: false
 Hi:
 我是 丶诺熙，ID: 5am3 [seɪm]。
 
-软工 --> Web安全摸鱼党。
+个人标签: 退役赛棍/Web安全/Andrid安全/培训讲师(400h+)/前RedTeam/现SDL客服工程师/
 
-Team: [kn0ck](https://kctf.github.io/) [SourceCode](http://sc0de.com)
+Team: 
+    - [kn0ck](https://kctf.github.io/) 副队长
+    - [SourceCode@HEBTU](http://sc0de.com) 创始人
+
+> 其他: 3CTF 冠军/CISP-PTS/
 
 
 
 ## 一些朋友
 
-
-- [p0desta](http://p0desta.com)
+- [p0desta](https://github.com/p0desta)
 - [raycp](https://ray-cp.github.io/)
-- [王一航](http://www.jianshu.com/u/bf30f18c872c)
+- [王一航](https://overflow.host/)
 - [chybeta](https://chybeta.github.io/)
 - [一叶飘零](http://skysec.top)
 - [manu](http://www.cnblogs.com/manu18/)
-- [3summer](https://d001um3.github.io/)
-- [N0rth3ty](http://northity.com/)
-- [wing](https://evilwing.me/)
+- [3summer](https://github.com/3summer)
+- [N0rth3ty](https://github.com/N0rth3)
+- [wing](https://redteaming.net/)
 - [panda](http://www.cnpanda.net/)
-- [菠萝吹雪](https://boluochuixue.top/)
-- [ERROR404](https://www.lhyerror404.cn/)
-- [lz1y](https://www.lz1y.cn/)
+- [ERROR404](https://github.com/hebtuerror404)
 - [Hpdoger](https://hpdoger.cn/)
+- [evoa](https://evoa.me/)
