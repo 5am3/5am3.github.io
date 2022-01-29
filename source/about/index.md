@@ -8,11 +8,14 @@ comments: false
 Hi:
 我是 丶诺熙，ID: 5am3 [seɪm]。
 
-个人标签: 退役赛棍/Web安全/Andrid安全/培训讲师(400h+)/前RedTeam/现SDL客服工程师/
+个人标签: 退役赛棍 / Web安全 / Andrid安全 / 培训讲师 / 前RedTeam / 现SDL客服工程师
+
+爱好: 滑雪 / 纸牌
 
 Team: 
-    - [kn0ck](https://kctf.github.io/) 副队长
-    - [SourceCode@HEBTU](http://sc0de.com) 创始人
+
+- [kn0ck](https://kctf.github.io/) 副队长
+- SourceCode@HEBTU 创始人
 
 > 其他: 3CTF 冠军/CISP-PTS/
 
