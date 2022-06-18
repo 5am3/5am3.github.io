@@ -26,7 +26,6 @@ Team:
 - [p0desta](https://github.com/p0desta)
 - [raycp](https://ray-cp.github.io/)
 - [王一航](https://overflow.host/)
-- [chybeta](https://chybeta.github.io/)
 - [一叶飘零](http://skysec.top)
 - [manu](http://www.cnblogs.com/manu18/)
 - [3summer](https://github.com/3summer)
@@ -36,3 +35,4 @@ Team:
 - [ERROR404](https://github.com/hebtuerror404)
 - [Hpdoger](https://hpdoger.cn/)
 - [evoa](https://evoa.me/)
+- [w22](http://www.w22.xyz/)
