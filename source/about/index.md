@@ -10,14 +10,14 @@ Hi:
 
 个人标签: 退役赛棍 / Web安全 / Android安全 / 培训讲师 / 前RedTeam / 现SDL客服工程师
 
-爱好: 滑雪 / 纸牌
+爱好: 滑雪 / 花切 / HAM(BG5ANC)
 
 Team: 
 
 - [kn0ck](https://kctf.github.io/) 副队长
 - SourceCode@HEBTU 创始人
 
-> 其他: 3CTF 冠军/CISP-PTS/
+> 其他: 3CTF 冠军 / CISP-PTS
 
 
 
