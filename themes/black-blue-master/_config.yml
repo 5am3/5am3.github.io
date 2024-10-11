@@ -32,6 +32,7 @@ feed:
   type: atom
   path: atom.xml
   limit: 20
+  template: ./source/atom.xml
 
 search:
   path: search.json
