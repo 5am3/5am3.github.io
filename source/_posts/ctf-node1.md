@@ -26,7 +26,7 @@ keywords:
 2. nullcon HackIM 2020 - split second
 3. 自己出的 - node game
 
-<!--more--->
+<!-- more -->
 
 
 ## HackTM CTF 2020 - Draw with us
