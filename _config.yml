@@ -76,9 +76,8 @@ deploy:
   # repo: https://git.coding.net/i_5am3/i_5am3.coding.me.git
   branch: gh-pages
 
-live2d:
-  model: tororo
-  bottom: 0
-  right: 50
-  bottom_s: -50
-  right_s: 0
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  template: ./source/atom.xml

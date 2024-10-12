@@ -28,12 +28,6 @@ Plugins:
 - hexo-generator-sitemap
 - hexo-generator-baidu-sitemap
 
-feed:
-  type: atom
-  path: atom.xml
-  limit: 20
-  template: ./source/atom.xml
-
 search:
   path: search.json
   field: post
@@ -195,3 +189,25 @@ TipTitle: true
 # Loading
 # Loading: true
 
+
+live2d:
+  enable: true
+  model: tororo
+  bottom: 0
+  right: 50
+  bottom_s: -50
+  right_s: 0
+
+  # enable: true
+  # scriptFrom: local
+  # pluginRootPath: live2dw/
+  # pluginJsPath: lib/
+  # pluginModelPath: assets/
+  tagMode: false
+  debug: false
+  display:
+    position: right
+    width: 150
+    height: 300
+  mobile:
+    show: false
