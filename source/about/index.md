@@ -23,6 +23,7 @@ Team:
 
 ## 一些朋友
 
+- [Skay's Blog](https://skay.rce.la/)
 - [p0desta](https://github.com/p0desta)
 - [raycp](https://ray-cp.github.io/)
 - [王一航](https://overflow.host/)
