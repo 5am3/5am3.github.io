@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="L6Lm9d5Crl"/>
+   
+    <meta name="keywords" content="漏洞挖掘,被动扫描" />
+  
+  
+  
+  
+  <title>GourdScan V2 配置安全及使用 | 丶诺熙丨5am3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近i春秋举办挖洞活动，于是自己也去凑个热闹。之前听大佬们讲过被动扫描，于是自己搜到了ysrc的这个扫描器。 https:&#x2F;&#x2F;github.com&#x2F;ysrc&#x2F;GourdScanV2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GourdScan V2 配置安全及使用">
+<meta property="og:url" content="https://blog.5am3.com/2018/07/04/GourdScan_V2/index.html">
+<meta property="og:site_name" content="丶诺熙丨5am3">
+<meta property="og:description" content="最近i春秋举办挖洞活动，于是自己也去凑个热闹。之前听大佬们讲过被动扫描，于是自己搜到了ysrc的这个扫描器。 https:&#x2F;&#x2F;github.com&#x2F;ysrc&#x2F;GourdScanV2">
+<meta property="og:locale">
+<meta property="og:image" content="https://img.5am3.com/img/180704/6KC744Ihi3.png">
+<meta property="og:image" content="https://img.5am3.com/img/180704/hdBaB96ICH.png">
+<meta property="og:image" content="https://img.5am3.com/img/180704/kGEgjLdeB8.png">
+<meta property="article:published_time" content="2018-07-04T07:06:07.000Z">
+<meta property="article:modified_time" content="2024-12-05T02:39:41.684Z">
+<meta property="article:author" content="丶诺熙">
+<meta property="article:tag" content="漏洞挖掘">
+<meta property="article:tag" content="被动扫描">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.5am3.com/img/180704/6KC744Ihi3.png">
+  
+    <link rel="alternative" href="/atom.xml" title="丶诺熙丨5am3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/avatar.jpg">
+  
+  
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        
+        <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <!-- <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script> -->
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.jpg" class="js-avatar">
+            
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="local-search-input" placeholder=" Search...">
+            </form>
+            <div id="local-search-result"></div>
+        
+        
+            <script type="text/javascript">
+                (function() {
+                    'use strict';
+                    function getMatchData(keyword, data) {
+                        var matchData = [];
+                        for(var i =0;i<data.length;i++){
+                            if(data[i].title.toLowerCase().indexOf(keyword)>=0) 
+                                matchData.push(data[i])
+                        }
+                        return matchData;
+                    }
+                    var $input = $('#local-search-input');
+                    var $resultContent = $('#local-search-result');
+                    $input.keyup(function(){
+                        $.ajax({
+                            url: '/search.json',
+                            dataType: "json",
+                            success: function( json ) {
+                                var str='<ul class=\"search-result-list\">';                
+                                var keyword = $input.val().trim().toLowerCase();
+                                $resultContent.innerHTML = "";
+                                if ($input.val().trim().length <= 0) {
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                }
+                                var results = getMatchData(keyword, json);
+                                if(results.length === 0){
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                } 
+                                for(var i =0; i<results.length; i++){
+                                    str += "<li><a href='"+ results[i].url +"' class='search-result-title'>"+ results[i].title +"</a></li>";
+                                }
+                                str += "</ul>";
+                                $resultContent.empty();
+                                $resultContent.append(str);
+                                $('#switch-area').hide();
+                            }
+                        });
+                    });
+                })();
+            </script>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a  href="/">主页</a></li>
+                        
+                            <li><a  href="/archives/">归档</a></li>
+                        
+                            <li><a  href="/tags">标签</a></li>
+                        
+                            <li><a  href="/categories/">分类</a></li>
+                        
+                            <li><a  href="/about/">关于</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github"  target="_blank" href="https://github.com/5am3" title="github">github</a>
+                            
+                                <a class="fl weibo"  target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                            
+                                <a class="fl rss"  target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                                <a class="fl mail"  target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                            
+                                <a class="fl zhihu"  target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/0ctf/" style="font-size: 10px;">0ctf</a> <a href="/tags/HEXO/" style="font-size: 12.5px;">HEXO</a> <a href="/tags/csp/" style="font-size: 10px;">csp</a> <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/misc/" style="font-size: 12.5px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/nonce%E7%BB%95%E8%BF%87/" style="font-size: 10px;">nonce绕过</a> <a href="/tags/web/" style="font-size: 15px;">web</a> <a href="/tags/web%E6%B8%97%E9%80%8F/" style="font-size: 10px;">web渗透</a> <a href="/tags/writeup/" style="font-size: 20px;">writeup</a> <a href="/tags/writeup-web-xss/" style="font-size: 10px;">writeup - web - xss</a> <a href="/tags/xman/" style="font-size: 12.5px;">xman</a> <a href="/tags/xss/" style="font-size: 17.5px;">xss</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" style="font-size: 10px;">漏洞挖掘</a> <a href="/tags/%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F/" style="font-size: 10px;">被动扫描</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 10px;">面试</a>
+                    </div>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">一个热爱安全的小渣渣！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/tags">标签</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/5am3" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                        <a class="mail" target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-GourdScan_V2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a  href="/2018/07/04/GourdScan_V2/" class="article-date">
+      <time datetime="2018-07-04T07:06:07.000Z" itemprop="datePublished">2018-07-04</time>
+</a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GourdScan V2 配置安全及使用
+    </h1>
+  
+
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/">信息安全</a><a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F/">漏洞扫描</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" rel="tag">漏洞挖掘</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F/" rel="tag">被动扫描</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>最近i春秋举办挖洞活动，于是自己也去凑个热闹。之前听大佬们讲过被动扫描，于是自己搜到了ysrc的这个扫描器。</p>
+<p><a href="https://github.com/ysrc/GourdScanV2">https://github.com/ysrc/GourdScanV2</a></p>
+<span id="more"></span>
+
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><p>关于安装配置，readme已经介绍的很清楚了。但奈何自己对Redis还有python一些库都不太熟，也懒得去踩那些坑。于是决定直接使用docker进行部署。</p>
+<blockquote>
+<p>环境：</p>
+<p>  腾讯云学生机  </p>
+<p>  Ubuntu Server 16.04.1 LTS 64位</p>
+<p>  1 核 1 GB 1 Mbps</p>
+<p>扫描的时候，将带宽临时升级为了5M（一天不到5块钱吧）</p>
+</blockquote>
+<ol>
+<li>首先安装docker</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install docker.io</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>然后从GitHub下载该项目</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ysrc/GourdScanV2.git</span><br></pre></td></tr></table></figure>
+
+<p>下载完成后，进入该目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> GourdScanV2</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>构造docker镜像</li>
+</ol>
+<p>但是自己在使用途中，遇到了一个问题。</p>
+<p>在安装tornado包的时候会报错。自己怀疑是python版本的问题，也有可能是其他原因。</p>
+<p>百度无果后，自己尝试将基础镜像改为16.04即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&quot;s/ubuntu:14.04/ubuntu:16.04/g&quot;</span> Dockerfile</span><br></pre></td></tr></table></figure>
+
+<p>然后运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker build -t gourdscan:2.1 .</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>此时镜像已经创建好了。接下来创建容器即可</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d -p 10000:22 -p 8000:8000 -p 10086:10086 -p 10806:10806 gourdscan:2.1 /usr/sbin/sshd -D</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>进入docker，配置服务</li>
+</ol>
+<p>然后登陆进入docker，登陆有两个方法。</p>
+<ul>
+<li>ssh登陆  <code>ssh root@localhost -p 10000</code></li>
+</ul>
+<p><em>用户名: root，密码: Y3rc_admin</em></p>
+<ul>
+<li>直接进入docker <code>docker exec -it 容器ID bash</code></li>
+</ul>
+<p>此时运行服务即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-server ~/gourdscan/conf/redis.conf</span><br><span class="line">gourdscan</span><br></pre></td></tr></table></figure>
+
+<h3 id="小技巧"><a href="#小技巧" class="headerlink" title="小技巧"></a>小技巧</h3><p>有时候会懒得在进入docker启动两个服务，有没有办法让他直接启动呢？有的。</p>
+<p>此时自行创建一个start.sh即可，然后在Dockerfile倒数第二行写入以下代码即可</p>
+<p>start.sh内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sleep</span> 1</span><br><span class="line">redis-server ~/gourdscan/conf/redis.conf</span><br><span class="line">python ~/gourdscan/gourdscan.py</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Dockerfile增加的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#添加start.sh，并准备开机执行</span><br><span class="line">COPY ./start.sh /root/start.sh</span><br><span class="line">RUN chmod +x /root/start.sh</span><br><span class="line">ENTRYPOINT cd /root; ./start.sh</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="使用被动扫描"><a href="#使用被动扫描" class="headerlink" title="使用被动扫描"></a>使用被动扫描</h2><p>安装成功后，即可开始happy的玩耍了。</p>
+<p>直接访问8000端口即可，默认平台用户名密码为：admin:Y3rc_admin</p>
+<p><img src="https://img.5am3.com/img/180704/6KC744Ihi3.png" alt="mark"></p>
+<p>登录后会发现四个标签</p>
+<p>分别是:</p>
+<blockquote>
+<p>扫描记录，代理配置，扫描规则设置，全局设置</p>
+</blockquote>
+<p>我们只需在代理配置处，随便选择一个代理，然后点击start即可。此时记录好端口号。在这里是10086端口。（如果用docker进行配置的话，请勿随意修改端口号，因为docker已经为默认端口做了映射，其他端口会无法访问的。）</p>
+<p><img src="https://img.5am3.com/img/180704/hdBaB96ICH.png" alt="mark"></p>
+<p>后面就不用说了，本地挂上该代理，然后流量就会走扫描器了。</p>
+<p>此时可以自己挂上代理尝试访问一些网站，然后在scan status处查看是否有日志，如果有的话，就没毛病了。</p>
+<p>然后点开Scan Config标签，直接点击 Start Gourdscan Scanner 即可开始扫描。</p>
+<p><img src="https://img.5am3.com/img/180704/kGEgjLdeB8.png" alt="mark"></p>
+<p>然后在Scan Status标签即可看到扫描日志。如果扫出漏洞，就会在Vulnerable处显示，点进去查看即可。</p>
+<p>由于我扫描时没有截图，所以凑合看吧。</p>
+<p>建议大家还是看一下官方readme，写的很清楚了。</p>
+<h2 id="一些感悟"><a href="#一些感悟" class="headerlink" title="一些感悟"></a>一些感悟</h2><p>自己扫了半天，扫出来两个大厂的反射型XSS，感觉还算不错的。</p>
+<p>越发感觉扫描器的重要性，有必要研究一下扫描器，争取自己写一个玩。</p>
+<p>在利用该扫描器扫描期间，暴露出了一些弊端，或许可以为自己以后避免踩坑。比如</p>
+<blockquote>
+<ol>
+<li>代理响应速度过慢，经常打不开网站。</li>
+<li>对大厂的一些waf应对不是很好。（经常伪报SQL注入漏洞）</li>
+<li>扫描时有时候会假死。</li>
+<li>对于反射型xss，仅验证的返回内容是否被转义，没有验证响应头是否可解析。（响应头为json时，浏览器是不会解析的）</li>
+</ol>
+</blockquote>
+<p>关于第一点，可能是一个通病，因为是vps做代理，可能或多或少都会很慢，自己打算抽时间深入看一下，到底为什么。因为这个问题不止这一次困扰自己了。</p>
+<p>再有就是第二点，这个其实还是大部分因为大厂的waf，貌似他们有风控，会对恶意请求随机拦截。也就是说同一个恶意请求，你发10次，他会拦截7次。还有3次是可以通过的。所以导致了扫描器的误报。（针对这个问题，也需要思考思考）</p>
+<p>最后，貌似最近EnsecTeam在推一些漏洞扫描的建设文章，有兴趣可以关注一下他们，微信直接搜就可以。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2018/07/04/GourdScan_V2/">GourdScan V2 配置安全及使用</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2018年07月04日 - 15时06分</p>
+        <p><span>最后更新:</span>2024年12月05日 - 02时39分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/07/04/GourdScan_V2/" title="GourdScan V2 配置安全及使用">https://blog.5am3.com/2018/07/04/GourdScan_V2/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://blog.5am3.com/2018/07/04/GourdScan_V2/　　作者: " title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a  href="/2018/07/23/MysqlOnline-writeup/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          MysqlOnline writeup 巅峰极客
+        
+      </div>
+    </a>
+  
+  
+    <a  href="/2018/06/03/0ctf-final/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2018 0CTF final h4x0rs.date</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-number">1.1.</span> <span class="toc-text">小技巧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F"><span class="toc-number">2.</span> <span class="toc-text">使用被动扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%84%9F%E6%82%9F"><span class="toc-number">3.</span> <span class="toc-text">一些感悟</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://static.5am3.com/js/baidu/share.js?v=111.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments" style="width: 90%; margin: 0 auto;"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: '5am3',
+      repo: '5am3.github.io',
+      oauth: {
+        client_id: 'f9b6a0a70c093d4f4f91',
+        client_secret: 'ddda0abc39ed79ab681585813d74b83e5e00256a',
+      },
+    })
+    gitment.render('gitments')
+</script> 
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/2018/07/23/MysqlOnline-writeup/" title="上一篇: MysqlOnline writeup 巅峰极客">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/2018/06/03/0ctf-final/" title="下一篇: 2018 0CTF final h4x0rs.date">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/02/11/ctf-node1/">近两次比赛遇到的node题目简析</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/19/ddctf2019/">2019DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/12/2018HCTF-share/">2018HCTF-share</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/23/MysqlOnline-writeup/">MysqlOnline writeup 巅峰极客</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/04/GourdScan_V2/">GourdScan V2 配置安全及使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/03/0ctf-final/">2018 0CTF final h4x0rs.date</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/04/web-testing-one/">记一次简单的渗透测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/ddctf2018/">2018DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/26/qwb-xss-rpo/">强网杯-Share your mind</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/25/anheng-2-xss/">2018安恒杯二月赛-web-应该不是 XSS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/SCodeCTF/">通过docker部署ctf题目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/20/2017LCTF-1/">2017LCTF wanna hack him? writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/09/360-interview/">360面试经历及心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/miac2-writeup/">2017-miac2-writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/02/xman-2/">【诺熙】XMAN训练营手记-2-密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/xman-1/">XMAN训练营手记-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo2/">2.初识HEXO-页面配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo1/">1.初识HEXO-文档排版</a></li></ul>
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 丶诺熙
+            </div>
+            <div class="footer-right">
+                <p>Power By <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/maochunguang/black-blue" target="_blank">Themme by tommy</a></p>
+            </div>
+        </div>
+        
+            <div class="visit">
+                <script src="https://s22.cnzz.com/z_stat.php?id=1267947142&web_id=1267947142" language="JavaScript"></script>
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+
+    </div>
+    
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 4;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'xxxxx', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?xxxxxx";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

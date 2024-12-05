@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="L6Lm9d5Crl"/>
+  
+  
+  
+  
+  <title>1.初识HEXO-文档排版 | 丶诺熙丨5am3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近水群，闲逛看到好多大神使用这个框架搭个人博客，效果还蛮棒。于是自己也开始尝试。尝试途中，也算是经历了一些困难。下面写一下吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.初识HEXO-文档排版">
+<meta property="og:url" content="https://blog.5am3.com/2017/06/17/hexo1/index.html">
+<meta property="og:site_name" content="丶诺熙丨5am3">
+<meta property="og:description" content="最近水群，闲逛看到好多大神使用这个框架搭个人博客，效果还蛮棒。于是自己也开始尝试。尝试途中，也算是经历了一些困难。下面写一下吧。">
+<meta property="og:locale">
+<meta property="og:image" content="https://img.5am3.com/5am3/img/20191213225947.png">
+<meta property="og:image" content="https://img.5am3.com/5am3/img/20191213230008.png">
+<meta property="og:image" content="https://img.5am3.com/5am3/img/20191213225955.png">
+<meta property="article:published_time" content="2017-06-17T12:04:09.000Z">
+<meta property="article:modified_time" content="2024-12-05T02:39:41.684Z">
+<meta property="article:author" content="丶诺熙">
+<meta property="article:tag" content="HEXO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.5am3.com/5am3/img/20191213225947.png">
+  
+    <link rel="alternative" href="/atom.xml" title="丶诺熙丨5am3" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/avatar.jpg">
+  
+  
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        
+        <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <!-- <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script> -->
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.jpg" class="js-avatar">
+            
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="local-search-input" placeholder=" Search...">
+            </form>
+            <div id="local-search-result"></div>
+        
+        
+            <script type="text/javascript">
+                (function() {
+                    'use strict';
+                    function getMatchData(keyword, data) {
+                        var matchData = [];
+                        for(var i =0;i<data.length;i++){
+                            if(data[i].title.toLowerCase().indexOf(keyword)>=0) 
+                                matchData.push(data[i])
+                        }
+                        return matchData;
+                    }
+                    var $input = $('#local-search-input');
+                    var $resultContent = $('#local-search-result');
+                    $input.keyup(function(){
+                        $.ajax({
+                            url: '/search.json',
+                            dataType: "json",
+                            success: function( json ) {
+                                var str='<ul class=\"search-result-list\">';                
+                                var keyword = $input.val().trim().toLowerCase();
+                                $resultContent.innerHTML = "";
+                                if ($input.val().trim().length <= 0) {
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                }
+                                var results = getMatchData(keyword, json);
+                                if(results.length === 0){
+                                    $resultContent.empty();
+                                    $('#switch-area').show();
+                                    return;
+                                } 
+                                for(var i =0; i<results.length; i++){
+                                    str += "<li><a href='"+ results[i].url +"' class='search-result-title'>"+ results[i].title +"</a></li>";
+                                }
+                                str += "</ul>";
+                                $resultContent.empty();
+                                $resultContent.append(str);
+                                $('#switch-area').hide();
+                            }
+                        });
+                    });
+                })();
+            </script>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a  href="/">主页</a></li>
+                        
+                            <li><a  href="/archives/">归档</a></li>
+                        
+                            <li><a  href="/tags">标签</a></li>
+                        
+                            <li><a  href="/categories/">分类</a></li>
+                        
+                            <li><a  href="/about/">关于</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github"  target="_blank" href="https://github.com/5am3" title="github">github</a>
+                            
+                                <a class="fl weibo"  target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                            
+                                <a class="fl rss"  target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                                <a class="fl mail"  target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                            
+                                <a class="fl zhihu"  target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/0ctf/" style="font-size: 10px;">0ctf</a> <a href="/tags/HEXO/" style="font-size: 12.5px;">HEXO</a> <a href="/tags/csp/" style="font-size: 10px;">csp</a> <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/misc/" style="font-size: 12.5px;">misc</a> <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/nonce%E7%BB%95%E8%BF%87/" style="font-size: 10px;">nonce绕过</a> <a href="/tags/web/" style="font-size: 15px;">web</a> <a href="/tags/web%E6%B8%97%E9%80%8F/" style="font-size: 10px;">web渗透</a> <a href="/tags/writeup/" style="font-size: 20px;">writeup</a> <a href="/tags/writeup-web-xss/" style="font-size: 10px;">writeup - web - xss</a> <a href="/tags/xman/" style="font-size: 12.5px;">xman</a> <a href="/tags/xss/" style="font-size: 17.5px;">xss</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98/" style="font-size: 10px;">漏洞挖掘</a> <a href="/tags/%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F/" style="font-size: 10px;">被动扫描</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 10px;">面试</a>
+                    </div>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">一个热爱安全的小渣渣！</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/tags">标签</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/5am3" title="github">github</a>
+                    
+                        <a class="weibo" target="_blank" href="https://weibo.com/5am3" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                        <a class="mail" target="_blank" href="mailto://i@5am3.com" title="mail">mail</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/5am3" title="zhihu">zhihu</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-hexo1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a  href="/2017/06/17/hexo1/" class="article-date">
+      <time datetime="2017-06-17T12:04:09.000Z" itemprop="datePublished">2017-06-17</time>
+</a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      1.初识HEXO-文档排版
+    </h1>
+  
+
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/WEB/">WEB</a><a class="article-category-link" href="/categories/WEB/HEXO/">HEXO</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HEXO/" rel="tag">HEXO</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>最近水群，闲逛看到好多大神使用这个框架搭个人博客，效果还蛮棒。于是自己也开始尝试。<br>尝试途中，也算是经历了一些困难。下面写一下吧。</p>
+<span id="more"></span>
+
+<h2 id="感受"><a href="#感受" class="headerlink" title="感受"></a>感受</h2><p>HEXO是一个很强大的静态博客框架，而且可以直接基于GitHub搭建博客。<br>真心蛮棒的。而且学习起来也不是太困难，稍微有点前端知识就能上手使用。<br>博客主要是用markdown书写，还是比较方便的。<br>下面给大家介绍一些小技巧，自己感觉蛮有意思的。</p>
+<h2 id="有意思的东西"><a href="#有意思的东西" class="headerlink" title="有意思的东西"></a>有意思的东西</h2><p>下面写一下在写hexo博客时的一些小技巧</p>
+<h3 id="如何实现点击查看更多"><a href="#如何实现点击查看更多" class="headerlink" title="如何实现点击查看更多"></a>如何实现点击查看更多</h3><p>在摘要写完后的下一行，写下这段代码即可。</p>
+<p><code>&lt;!--more--&gt;</code></p>
+<h3 id="如何插入代码"><a href="#如何插入代码" class="headerlink" title="如何插入代码"></a>如何插入代码</h3><p>插入代码有两种方式。([]内的为参数，书写时请删掉[]。)</p>
+<ul>
+<li><strong>markdown语法</strong></li>
+</ul>
+<p><code>`代码`</code><br><em>效果是这样</em></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">```html</span><br><span class="line">&#123;% codeblock 丶诺熙 http://blog.5am3.com/2017/05/23/初识HEXO/ 初始HEXO lang:html %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>代码块<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;a&quot;</span>&gt;</span>一个div<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;% endcodeblock %&#125;</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+<p><em>效果是这样,html为高亮语法、可以自己随意填</em></p>
+<ul>
+<li><strong>swig语法</strong></li>
+</ul>
+<p><em>在这里就不做详细解释了。这个例子大家可以看一下。</em></p>
+<figure class="highlight html"><figcaption><span>丶诺熙</span><a href="http://blog.5am3.com/2017/05/23/初识HEXO/">初识HEXO</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock 丶诺熙 http://blog.5am3.com/2017/05/23/初识HEXO/ 初识HEXO lang:html %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>代码块<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;a&quot;</span>&gt;</span>一个div<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何插入引用"><a href="#如何插入引用" class="headerlink" title="如何插入引用"></a>如何插入引用</h3><ul>
+<li>markdown语法</li>
+</ul>
+<blockquote>
+<p>&gt;这是一条引用<br>&gt;这是第二条引用</p>
+</blockquote>
+<ul>
+<li>swig语法</li>
+</ul>
+<blockquote><p>{% blockquote @ http:&#x2F; &#x2F;blog.5am3.com&#x2F;2017&#x2F;05&#x2F;23&#x2F;初识HEXO&#x2F; 丶诺熙 %}<br>Every interaction is both precious and an opportunity to delight.<br>{% endblockquote %}</p>
+<footer><strong>@</strong><cite><a href="http://blog.5am3.com/2017/05/23/初识HEXO/">丶诺熙</a></cite></footer></blockquote>
+
+<p>自我感觉就是md比较简单粗暴，而swig则功能比较强大，比如引用可以标注引用来源。还可以加超链接。满棒的。</p>
+<ul>
+<li>以上均参考了<a href="https://segmentfault.com/a/1190000009478129">Adam的博客</a>，如果有想详细了解的小伙伴可以点进去。</li>
+</ul>
+<h2 id="自己遇到的一些小坑"><a href="#自己遇到的一些小坑" class="headerlink" title="自己遇到的一些小坑"></a>自己遇到的一些小坑</h2><h3 id="如何摆平代码"><a href="#如何摆平代码" class="headerlink" title="如何摆平代码"></a>如何摆平代码</h3><p>比如刚刚的那几个代码例子，研究好久才写出来。<br>因为如果直接写会被hexo编译成代码，而不是原来的样子。<br>但是写成以下就可以绕过转义。</p>
+<ul>
+<li>md语法</li>
+</ul>
+<p><img src="https://img.5am3.com/5am3/img/20191213225947.png"></p>
+<p>也就是说，如果用md语法。写代码时，你的反引号比他多一个，你就赢了。这就是转义了。</p>
+<p>但是写引用的时候要注意了。引用的转义是反斜杠。</p>
+<p><img src="https://img.5am3.com/5am3/img/20191213230008.png"></p>
+<ul>
+<li>swig语法</li>
+</ul>
+<p><img src="https://img.5am3.com/5am3/img/20191213225955.png"></p>
+<p>如果是swig语法，可以加一个框，把他框起来，表明是源代码就好了。<br>但是自己用的时候感觉bug不少。但没办法了。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a  href="/2017/06/17/hexo1/">1.初识HEXO-文档排版</a></p>
+        <p><span>文章作者:</span><a  href="/" title="访问  的个人博客"></a></p>
+        <p><span>发布时间:</span>2017年06月17日 - 20时04分</p>
+        <p><span>最后更新:</span>2024年12月05日 - 02时39分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/17/hexo1/" title="1.初识HEXO-文档排版">https://blog.5am3.com/2017/06/17/hexo1/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://blog.5am3.com/2017/06/17/hexo1/　　作者: " title=""></span>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a  href="/2017/06/17/hexo2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          2.初识HEXO-页面配置
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%9F%E5%8F%97"><span class="toc-number">1.</span> <span class="toc-text">感受</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E6%84%8F%E6%80%9D%E7%9A%84%E4%B8%9C%E8%A5%BF"><span class="toc-number">2.</span> <span class="toc-text">有意思的东西</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%82%B9%E5%87%BB%E6%9F%A5%E7%9C%8B%E6%9B%B4%E5%A4%9A"><span class="toc-number">2.1.</span> <span class="toc-text">如何实现点击查看更多</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8F%92%E5%85%A5%E4%BB%A3%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">如何插入代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8F%92%E5%85%A5%E5%BC%95%E7%94%A8"><span class="toc-number">2.3.</span> <span class="toc-text">如何插入引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B0%8F%E5%9D%91"><span class="toc-number">3.</span> <span class="toc-text">自己遇到的一些小坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%91%86%E5%B9%B3%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.</span> <span class="toc-text">如何摆平代码</span></a></li></ol></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='https://static.5am3.com/js/baidu/share.js?v=111.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments" style="width: 90%; margin: 0 auto;"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: '5am3',
+      repo: '5am3.github.io',
+      oauth: {
+        client_id: 'f9b6a0a70c093d4f4f91',
+        client_secret: 'ddda0abc39ed79ab681585813d74b83e5e00256a',
+      },
+    })
+    gitment.render('gitments')
+</script> 
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a  href="/2017/06/17/hexo2/" title="上一篇: 2.初识HEXO-页面配置">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a  href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/02/11/ctf-node1/">近两次比赛遇到的node题目简析</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/19/ddctf2019/">2019DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/12/2018HCTF-share/">2018HCTF-share</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/23/MysqlOnline-writeup/">MysqlOnline writeup 巅峰极客</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/04/GourdScan_V2/">GourdScan V2 配置安全及使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/03/0ctf-final/">2018 0CTF final h4x0rs.date</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/04/web-testing-one/">记一次简单的渗透测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/ddctf2018/">2018DDCTF  writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/26/qwb-xss-rpo/">强网杯-Share your mind</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/25/anheng-2-xss/">2018安恒杯二月赛-web-应该不是 XSS</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/08/SCodeCTF/">通过docker部署ctf题目</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/20/2017LCTF-1/">2017LCTF wanna hack him? writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/09/360-interview/">360面试经历及心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/miac2-writeup/">2017-miac2-writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/02/xman-2/">【诺熙】XMAN训练营手记-2-密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/xman-1/">XMAN训练营手记-1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo2/">2.初识HEXO-页面配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/17/hexo1/">1.初识HEXO-文档排版</a></li></ul>
+    
+    <script src="https://cdn.bootcdn.net/ajax/libs/require.js/2.1.6/require.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script>
+        $(".post-list").addClass("toc-article");
+        // $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 丶诺熙
+            </div>
+            <div class="footer-right">
+                <p>Power By <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/maochunguang/black-blue" target="_blank">Themme by tommy</a></p>
+            </div>
+        </div>
+        
+            <div class="visit">
+                <script src="https://s22.cnzz.com/z_stat.php?id=1267947142&web_id=1267947142" language="JavaScript"></script>
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >极客到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+
+    </div>
+    
+<script src="/js/main.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 4;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'xxxxx', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?xxxxxx";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
