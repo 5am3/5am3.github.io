@@ -3,25 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL跳转工具</title>
+    <title>增强版浏览器上下文对象查看器</title>
     <!-- 引入Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 引入代码高亮库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     
-    <!-- 配置Tailwind自定义颜色和字体 -->
+    <!-- 配置Tailwind -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#4F46E5',
+                        primary: '#3B82F6',
                         secondary: '#10B981',
-                        neutral: '#1F2937',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
                     },
                     fontFamily: {
-                        inter: ['Inter', 'system-ui', 'sans-serif'],
-                    },
+                        mono: ['Consolas', 'Monaco', 'monospace'],
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
                 }
             }
         }
@@ -33,92 +38,680 @@
             .content-auto {
                 content-visibility: auto;
             }
-            .card-shadow {
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            .scrollbar-thin {
+                scrollbar-width: thin;
             }
-            .hover-lift {
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            .scrollbar-thin::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
             }
-            .hover-lift:hover {
-                transform: translateY(-2px);
+            .scrollbar-thin::-webkit-scrollbar-thumb {
+                background-color: rgba(156, 163, 175, 0.5);
+                border-radius: 3px;
+            }
+            .method-signature {
+                color: #61dafb;
+            }
+            .keyword {
+                color: #d73a49;
+            }
+            .string {
+                color: #032f62;
             }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 to-purple-50 min-h-screen flex flex-col items-center justify-center p-4 font-inter">
-    <!-- 主容器 -->
-    <div class="w-full max-w-md bg-white rounded-2xl card-shadow p-8">
-        <!-- 标题区域 -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4">
-                <i class="fa fa-external-link text-2xl"></i>
-            </div>
-            <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-neutral mb-2">URL跳转工具</h1>
-            <p class="text-slate-500">输入网址，一键快速跳转</p>
-        </div>
-        
-        <!-- 表单区域 -->
-        <form id="urlForm" class="space-y-5">
-            <div>
-                <label for="urlInput" class="block text-sm font-medium text-slate-700 mb-1.5">目标网址</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                        <i class="fa fa-link"></i>
-                    </span>
-                    <input 
-                        type="url" 
-                        id="urlInput" 
-                        placeholder="https://example.com" 
-                        class="w-full pl-12 pr-4 py-3.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
-                        required
-                    >
+<body class="bg-gray-50 font-sans text-dark overflow-x-hidden">
+    <div class="min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa fa-code-fork text-primary text-2xl"></i>
+                    <h1 class="text-xl font-bold">增强版浏览器上下文对象查看器</h1>
                 </div>
-                <p class="mt-1.5 text-xs text-slate-500">支持 HTTP 和 HTTPS 协议</p>
+                <div class="flex items-center space-x-3 mt-2 sm:mt-0">
+                    <button id="refreshBtn" class="flex items-center space-x-1 px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors">
+                        <i class="fa fa-refresh"></i>
+                        <span>刷新</span>
+                    </button>
+                    <button id="copyBtn" class="flex items-center space-x-1 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors">
+                        <i class="fa fa-copy"></i>
+                        <span>复制</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 主要内容区 -->
+        <main class="flex-1 container mx-auto px-4 py-6">
+            <!-- 控制区 -->
+            <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1">
+                        <label for="searchInput" class="block text-sm font-medium text-gray-700 mb-1">搜索对象或方法</label>
+                        <div class="relative">
+                            <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="输入对象或方法名称搜索..." 
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                            >
+                        </div>
+                    </div>
+                    <div class="w-full sm:w-auto">
+                        <label for="depthSelect" class="block text-sm font-medium text-gray-700 mb-1">递归深度</label>
+                        <select id="depthSelect" class="w-full sm:w-36 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all">
+                            <option value="1">浅度 (1层)</option>
+                            <option value="2" selected>中度 (2层)</option>
+                            <option value="3">深度 (3层)</option>
+                            <option value="4">极深 (4层)</option>
+                        </select>
+                    </div>
+                    <div class="w-full sm:w-auto">
+                        <label for="filterSelect" class="block text-sm font-medium text-gray-700 mb-1">过滤类型</label>
+                        <select id="filterSelect" class="w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all">
+                            <option value="all" selected>所有类型</option>
+                            <option value="objects">仅对象</option>
+                            <option value="methods">仅方法</option>
+                            <option value="primitives">仅基本类型</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <button id="expandAll" class="text-sm px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded transition-colors">
+                        <i class="fa fa-plus-square-o mr-1"></i>展开全部
+                    </button>
+                    <button id="collapseAll" class="text-sm px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded transition-colors">
+                        <i class="fa fa-minus-square-o mr-1"></i>折叠全部
+                    </button>
+                    <button id="showMethodsOnly" class="text-sm px-3 py-1 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 rounded transition-colors">
+                        <i class="fa fa-cogs mr-1"></i>仅显示方法
+                    </button>
+                </div>
             </div>
             
-            <button 
-                type="submit" 
-                class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 hover-lift"
-            >
-                <span>立即跳转</span>
-                <i class="fa fa-arrow-right"></i>
-            </button>
-        </form>
+            <!-- 结果展示区 -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fa fa-object-group text-primary mr-2"></i>
+                        <h2 class="font-medium">window 对象属性与方法列表</h2>
+                    </div>
+                    <div id="stats" class="text-sm text-gray-500">
+                        共 <span id="totalCount">0</span> 个项目 | 
+                        对象: <span id="objectCount">0</span> | 
+                        方法: <span id="methodCount">0</span>
+                    </div>
+                </div>
+                <div id="resultContainer" class="max-h-[60vh] overflow-auto scrollbar-thin p-4">
+                    <div class="flex items-center justify-center h-40 text-gray-500">
+                        <div class="text-center">
+                            <i class="fa fa-spinner fa-spin text-2xl mb-2"></i>
+                            <p>正在获取浏览器上下文对象和方法...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- 页脚 -->
+        <footer class="bg-white border-t border-gray-200 py-4 mt-6">
+            <div class="container mx-auto px-4 text-center text-sm text-gray-500">
+                <p>增强版浏览器上下文对象查看器 | 可查看对象方法及源代码</p>
+            </div>
+        </footer>
     </div>
     
-    <!-- 页脚 -->
-    <footer class="mt-8 text-slate-500 text-sm">
-        <p>© 2025 URL跳转工具 | 安全便捷</p>
-    </footer>
+    <!-- 方法代码查看模态框 -->
+    <div id="methodModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] flex flex-col">
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 id="methodTitle" class="font-bold text-lg"></h3>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-4 flex-1 overflow-auto scrollbar-thin">
+                <div class="mb-4">
+                    <span id="methodType" class="inline-block text-xs px-2 py-0.5 rounded bg-yellow-100 text-yellow-800 mb-2"></span>
+                    <p id="methodDescription" class="text-sm text-gray-600"></p>
+                </div>
+                <div class="bg-gray-900 text-gray-100 p-4 rounded-md overflow-x-auto">
+                    <pre><code id="methodCode" class="language-javascript"></code></pre>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200 flex justify-end">
+                <button id="copyMethodCode" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+                    <i class="fa fa-copy mr-1"></i>复制代码
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // 获取表单和输入框元素
-        const form = document.getElementById('urlForm');
-        const urlInput = document.getElementById('urlInput');
+        // 全局变量存储对象数据
+        let allObjects = {};
+        let filteredObjects = {};
+        let stats = { total: 0, objects: 0, methods: 0 };
         
-        // 表单提交事件处理
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // 阻止表单默认提交行为
+        // DOM 加载完成后执行
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取DOM元素
+            const resultContainer = document.getElementById('resultContainer');
+            const refreshBtn = document.getElementById('refreshBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const searchInput = document.getElementById('searchInput');
+            const depthSelect = document.getElementById('depthSelect');
+            const filterSelect = document.getElementById('filterSelect');
+            const expandAllBtn = document.getElementById('expandAll');
+            const collapseAllBtn = document.getElementById('collapseAll');
+            const showMethodsOnlyBtn = document.getElementById('showMethodsOnly');
+            const totalCountEl = document.getElementById('totalCount');
+            const objectCountEl = document.getElementById('objectCount');
+            const methodCountEl = document.getElementById('methodCount');
             
-            let url = urlInput.value.trim();
+            // 模态框元素
+            const methodModal = document.getElementById('methodModal');
+            const methodTitle = document.getElementById('methodTitle');
+            const methodType = document.getElementById('methodType');
+            const methodDescription = document.getElementById('methodDescription');
+            const methodCode = document.getElementById('methodCode');
+            const closeModal = document.getElementById('closeModal');
+            const copyMethodCode = document.getElementById('copyMethodCode');
             
-
+            // 初始加载对象
+            loadBrowserObjects();
             
-            // 跳转到输入的URL
-            window.location.href = url;
-        });
-        
-        // 为输入框添加回车键提交功能
-        urlInput.addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                form.dispatchEvent(new Event('submit'));
+            // 事件监听
+            refreshBtn.addEventListener('click', loadBrowserObjects);
+            copyBtn.addEventListener('click', copyToClipboard);
+            searchInput.addEventListener('input', handleSearch);
+            depthSelect.addEventListener('change', loadBrowserObjects);
+            filterSelect.addEventListener('change', handleFilterChange);
+            expandAllBtn.addEventListener('click', () => toggleAllNodes(true));
+            collapseAllBtn.addEventListener('click', () => toggleAllNodes(false));
+            showMethodsOnlyBtn.addEventListener('click', () => {
+                filterSelect.value = 'methods';
+                handleFilterChange();
+            });
+            
+            // 模态框事件
+            closeModal.addEventListener('click', () => methodModal.classList.add('hidden'));
+            copyMethodCode.addEventListener('click', copyMethodCodeToClipboard);
+            
+            // 点击模态框外部关闭
+            methodModal.addEventListener('click', (e) => {
+                if (e.target === methodModal) {
+                    methodModal.classList.add('hidden');
+                }
+            });
+            
+            // 键盘ESC关闭模态框
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !methodModal.classList.contains('hidden')) {
+                    methodModal.classList.add('hidden');
+                }
+            });
+            
+            // 获取浏览器上下文对象和方法
+            function loadBrowserObjects() {
+                resultContainer.innerHTML = `
+                    <div class="flex items-center justify-center h-40 text-gray-500">
+                        <div class="text-center">
+                            <i class="fa fa-spinner fa-spin text-2xl mb-2"></i>
+                            <p>正在获取浏览器上下文对象和方法...</p>
+                        </div>
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    try {
+                        stats = { total: 0, objects: 0, methods: 0 };
+                        const maxDepth = parseInt(depthSelect.value) || 2;
+                        allObjects = getWindowObjects(maxDepth);
+                        filteredObjects = { ...allObjects };
+                        renderObjects(allObjects);
+                        updateStats();
+                    } catch (error) {
+                        resultContainer.innerHTML = `
+                            <div class="p-4 text-red-500 bg-red-50 rounded-md">
+                                <i class="fa fa-exclamation-circle mr-2"></i>
+                                <span>获取对象时出错: ${error.message}</span>
+                            </div>
+                        `;
+                    }
+                }, 300);
             }
-        });
-
-        // 页面加载时自动聚焦到输入框
-        window.addEventListener('load', function() {
-            urlInput.focus();
+            
+            // 递归获取window对象的属性和方法
+            function getWindowObjects(maxDepth, currentDepth = 1) {
+                const objects = {};
+                
+                // 遍历window对象的所有属性
+                for (const key in window) {
+                    try {
+                        // 跳过一些特殊属性避免错误和循环引用
+                        if (['top', 'parent', 'window', 'self', 'frames', 'globalThis'].includes(key)) {
+                            objects[key] = { type: 'window', value: '[Window Object]' };
+                            stats.total++;
+                            stats.objects++;
+                            continue;
+                        }
+                        
+                        const value = window[key];
+                        const type = getType(value);
+                        
+                        // 更新统计信息
+                        stats.total++;
+                        if (type === 'function') {
+                            stats.methods++;
+                        } else if (['object', 'array', 'window', 'element', 'regexp', 'date'].includes(type)) {
+                            stats.objects++;
+                        }
+                        
+                        // 处理函数(方法)类型
+                        if (type === 'function') {
+                            // 获取函数源代码
+                            let sourceCode = '';
+                            try {
+                                sourceCode = value.toString();
+                            } catch (e) {
+                                sourceCode = '[无法获取函数源代码]';
+                            }
+                            
+                            // 提取函数签名作为简短描述
+                            const signature = getFunctionSignature(sourceCode);
+                            
+                            objects[key] = { 
+                                type, 
+                                value: signature,
+                                sourceCode: sourceCode
+                            };
+                        }
+                        // 基础类型直接存储
+                        else if (['string', 'number', 'boolean', 'null', 'undefined', 'symbol'].includes(type)) {
+                            objects[key] = { 
+                                type, 
+                                value: type === 'symbol' ? value.toString() : String(value) 
+                            };
+                        } 
+                        // 对象类型且未达到最大深度则递归
+                        else if (currentDepth < maxDepth) {
+                            objects[key] = { 
+                                type, 
+                                value: getWindowObjects(maxDepth, currentDepth + 1, value) 
+                            };
+                        } 
+                        // 达到最大深度则只显示类型
+                        else {
+                            objects[key] = { type, value: `[${type} Object]` };
+                        }
+                    } catch (e) {
+                        // 处理无法访问的属性
+                        objects[key] = { type: 'unaccessible', value: '[无法访问的属性]' };
+                        stats.total++;
+                    }
+                }
+                
+                return objects;
+            }
+            
+            // 获取值的类型
+            function getType(value) {
+                if (value === null) return 'null';
+                if (typeof value === 'undefined') return 'undefined';
+                if (typeof value === 'function') return 'function';
+                if (typeof value === 'symbol') return 'symbol';
+                if (Array.isArray(value)) return 'array';
+                if (value instanceof RegExp) return 'regexp';
+                if (value instanceof Date) return 'date';
+                if (value instanceof HTMLElement) return 'element';
+                return 'object';
+            }
+            
+            // 提取函数签名
+            function getFunctionSignature(sourceCode) {
+                // 简单提取函数名和参数
+                const match = sourceCode.match(/^function\s+([^\s(]*)\s*\(([^)]*)\)/);
+                if (match) {
+                    const name = match[1] || 'anonymous';
+                    const params = match[2];
+                    return `function ${name}(${params}) { ... }`;
+                }
+                
+                // 处理箭头函数
+                const arrowMatch = sourceCode.match(/^([^=]*)\s*=>/);
+                if (arrowMatch) {
+                    return `${arrowMatch[1]} => { ... }`;
+                }
+                
+                return '[Function]';
+            }
+            
+            // 渲染对象到页面
+            function renderObjects(objects, container = resultContainer) {
+                let html = '<ul class="object-tree">';
+                
+                for (const [key, data] of Object.entries(objects)) {
+                    const hasChildren = typeof data.value === 'object' && data.value !== null && 
+                                      !Array.isArray(data.value) && Object.keys(data.value).length > 0;
+                    
+                    const typeClass = getTypeClass(data.type);
+                    const expandIcon = hasChildren ? 'fa-chevron-right' : 'fa-circle-o text-xs';
+                    const methodIcon = data.type === 'function' ? '<i class="fa fa-cog text-yellow-500 ml-2 cursor-pointer view-method" title="查看方法代码"></i>' : '';
+                    
+                    html += `
+                        <li class="mb-1.5" data-type="${data.type}">
+                            <div class="flex items-center flex-wrap">
+                                ${hasChildren ? `<i class="expand-icon fa ${expandIcon} text-gray-400 mr-2 cursor-pointer transition-transform duration-200"></i>` : 
+                                               `<i class="fa ${expandIcon} text-gray-400 mr-2"></i>`}
+                                <span class="font-medium mr-2">${key}</span>
+                                <span class="text-xs px-2 py-0.5 rounded ${typeClass}">${data.type}</span>
+                                <span class="ml-2 text-gray-600 text-sm break-all">${data.value}</span>
+                                ${methodIcon}
+                            </div>
+                            ${hasChildren ? `<ul class="children ml-6 mt-1 hidden">${renderChildren(data.value)}</ul>` : ''}
+                        </li>
+                    `;
+                }
+                
+                html += '</ul>';
+                container.innerHTML = html;
+                
+                // 添加展开/折叠事件
+                document.querySelectorAll('.expand-icon').forEach(icon => {
+                    icon.addEventListener('click', function() {
+                        const children = this.parentElement.nextElementSibling;
+                        if (children) {
+                            children.classList.toggle('hidden');
+                            this.classList.toggle('fa-chevron-right');
+                            this.classList.toggle('fa-chevron-down');
+                            this.classList.toggle('rotate-90');
+                        }
+                    });
+                });
+                
+                // 添加查看方法代码事件
+                document.querySelectorAll('.view-method').forEach(icon => {
+                    icon.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const key = this.parentElement.querySelector('.font-medium').textContent;
+                        const parentKey = this.closest('li').parentElement.closest('li')?.querySelector('.font-medium')?.textContent;
+                        const fullName = parentKey ? `${parentKey}.${key}` : key;
+                        
+                        // 查找对应的方法数据
+                        let methodData;
+                        if (parentKey && filteredObjects[parentKey]?.value) {
+                            methodData = filteredObjects[parentKey].value[key];
+                        } else {
+                            methodData = filteredObjects[key];
+                        }
+                        
+                        if (methodData) {
+                            showMethodDetails(fullName, methodData);
+                        }
+                    });
+                });
+            }
+            
+            // 渲染子对象
+            function renderChildren(children) {
+                let html = '';
+                
+                for (const [key, data] of Object.entries(children)) {
+                    const hasChildren = typeof data.value === 'object' && data.value !== null && 
+                                      !Array.isArray(data.value) && Object.keys(data.value).length > 0;
+                    
+                    const typeClass = getTypeClass(data.type);
+                    const expandIcon = hasChildren ? 'fa-chevron-right' : 'fa-circle-o text-xs';
+                    const methodIcon = data.type === 'function' ? '<i class="fa fa-cog text-yellow-500 ml-2 cursor-pointer view-method" title="查看方法代码"></i>' : '';
+                    
+                    html += `
+                        <li class="mb-1.5" data-type="${data.type}">
+                            <div class="flex items-center flex-wrap">
+                                ${hasChildren ? `<i class="expand-icon fa ${expandIcon} text-gray-400 mr-2 cursor-pointer transition-transform duration-200"></i>` : 
+                                               `<i class="fa ${expandIcon} text-gray-400 mr-2"></i>`}
+                                <span class="font-medium mr-2">${key}</span>
+                                <span class="text-xs px-2 py-0.5 rounded ${typeClass}">${data.type}</span>
+                                <span class="ml-2 text-gray-600 text-sm break-all">${data.value}</span>
+                                ${methodIcon}
+                            </div>
+                            ${hasChildren ? `<ul class="children ml-6 mt-1 hidden">${renderChildren(data.value)}</ul>` : ''}
+                        </li>
+                    `;
+                }
+                
+                return html;
+            }
+            
+            // 获取类型对应的样式类
+            function getTypeClass(type) {
+                const typeClasses = {
+                    'string': 'bg-blue-100 text-blue-800',
+                    'number': 'bg-green-100 text-green-800',
+                    'boolean': 'bg-purple-100 text-purple-800',
+                    'null': 'bg-gray-100 text-gray-800',
+                    'undefined': 'bg-gray-100 text-gray-800',
+                    'function': 'bg-yellow-100 text-yellow-800',
+                    'symbol': 'bg-pink-100 text-pink-800',
+                    'array': 'bg-indigo-100 text-indigo-800',
+                    'regexp': 'bg-teal-100 text-teal-800',
+                    'date': 'bg-orange-100 text-orange-800',
+                    'element': 'bg-red-100 text-red-800',
+                    'window': 'bg-primary/10 text-primary',
+                    'object': 'bg-gray-100 text-gray-800',
+                    'unaccessible': 'bg-gray-50 text-gray-500'
+                };
+                
+                return typeClasses[type] || 'bg-gray-100 text-gray-800';
+            }
+            
+            // 显示方法详情
+            function showMethodDetails(name, data) {
+                methodTitle.textContent = name;
+                methodType.textContent = data.type;
+                
+                // 生成方法描述
+                let description = '';
+                if (data.type === 'function') {
+                    description = `这是一个${name.includes('.') ? '对象方法' : '全局函数'}。点击下方代码区域可查看完整源代码。`;
+                }
+                methodDescription.textContent = description;
+                
+                // 显示方法代码并高亮
+                methodCode.textContent = data.sourceCode || '[无法获取函数源代码]';
+                hljs.highlightElement(methodCode);
+                
+                // 显示模态框
+                methodModal.classList.remove('hidden');
+            }
+            
+            // 复制方法代码到剪贴板
+            function copyMethodCodeToClipboard() {
+                const text = methodCode.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    // 显示复制成功提示
+                    const originalText = copyMethodCode.innerHTML;
+                    copyMethodCode.innerHTML = '<i class="fa fa-check mr-1"></i>已复制';
+                    
+                    setTimeout(() => {
+                        copyMethodCode.innerHTML = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                });
+            }
+            
+            // 搜索功能
+            function handleSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    filteredObjects = { ...allObjects };
+                    renderObjects(allObjects);
+                    updateStats();
+                    return;
+                }
+                
+                // 过滤包含搜索词的对象
+                const results = {};
+                filterObjects(allObjects, results, searchTerm);
+                
+                filteredObjects = results;
+                renderObjects(results);
+                updateStats();
+            }
+            
+            // 递归过滤对象
+            function filterObjects(source, target, searchTerm) {
+                for (const [key, value] of Object.entries(source)) {
+                    // 如果键名包含搜索词，直接添加
+                    if (key.toLowerCase().includes(searchTerm)) {
+                        target[key] = value;
+                        continue;
+                    }
+                    
+                    // 如果是对象且有子属性，递归检查
+                    if (typeof value.value === 'object' && value.value !== null && 
+                        !Array.isArray(value.value) && Object.keys(value.value).length > 0) {
+                        
+                        const childResults = {};
+                        filterObjects(value.value, childResults, searchTerm);
+                        
+                        // 如果子属性中有匹配项，添加这个对象
+                        if (Object.keys(childResults).length > 0) {
+                            target[key] = {
+                                ...value,
+                                value: childResults
+                            };
+                        }
+                    }
+                }
+            }
+            
+            // 处理过滤类型变化
+            function handleFilterChange() {
+                const filterType = filterSelect.value;
+                
+                if (filterType === 'all') {
+                    filteredObjects = { ...allObjects };
+                    renderObjects(allObjects);
+                    updateStats();
+                    return;
+                }
+                
+                // 根据类型过滤
+                const results = {};
+                filterByType(allObjects, results, filterType);
+                
+                filteredObjects = results;
+                renderObjects(results);
+                updateStats();
+            }
+            
+            // 按类型过滤对象
+            function filterByType(source, target, filterType) {
+                for (const [key, value] of Object.entries(source)) {
+                    // 检查当前项是否符合过滤条件
+                    const matchesFilter = (filterType === 'methods' && value.type === 'function') ||
+                                         (filterType === 'objects' && ['object', 'array', 'window', 'element', 'regexp', 'date'].includes(value.type)) ||
+                                         (filterType === 'primitives' && ['string', 'number', 'boolean', 'null', 'undefined', 'symbol'].includes(value.type));
+                    
+                    // 如果当前项符合条件，直接添加
+                    if (matchesFilter) {
+                        target[key] = value;
+                        continue;
+                    }
+                    
+                    // 如果是对象且有子属性，递归检查
+                    if (typeof value.value === 'object' && value.value !== null && 
+                        !Array.isArray(value.value) && Object.keys(value.value).length > 0) {
+                        
+                        const childResults = {};
+                        filterByType(value.value, childResults, filterType);
+                        
+                        // 如果子属性中有匹配项，添加这个对象
+                        if (Object.keys(childResults).length > 0) {
+                            target[key] = {
+                                ...value,
+                                value: childResults
+                            };
+                        }
+                    }
+                }
+            }
+            
+            // 展开/折叠所有节点
+            function toggleAllNodes(expand) {
+                const icons = document.querySelectorAll('.expand-icon');
+                const children = document.querySelectorAll('.children');
+                
+                icons.forEach((icon, index) => {
+                    if (expand) {
+                        children[index].classList.remove('hidden');
+                        icon.classList.remove('fa-chevron-right');
+                        icon.classList.add('fa-chevron-down', 'rotate-90');
+                    } else {
+                        children[index].classList.add('hidden');
+                        icon.classList.remove('fa-chevron-down', 'rotate-90');
+                        icon.classList.add('fa-chevron-right');
+                    }
+                });
+            }
+            
+            // 复制到剪贴板
+            function copyToClipboard() {
+                const text = JSON.stringify(allObjects, null, 2);
+                navigator.clipboard.writeText(text).then(() => {
+                    // 显示复制成功提示
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fa fa-check mr-1"></i>已复制';
+                    copyBtn.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+                    copyBtn.classList.add('bg-green-100', 'text-green-700');
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.classList.remove('bg-green-100', 'text-green-700');
+                        copyBtn.classList.add('bg-gray-100', 'hover:bg-gray-200');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                });
+            }
+            
+            // 更新统计信息
+            function updateStats() {
+                // 计算过滤后的统计数据
+                const filteredStats = { total: 0, objects: 0, methods: 0 };
+                countObjects(filteredObjects, filteredStats);
+                
+                totalCountEl.textContent = filteredStats.total;
+                objectCountEl.textContent = filteredStats.objects;
+                methodCountEl.textContent = filteredStats.methods;
+            }
+            
+            // 递归统计对象数量
+            function countObjects(objects, stats) {
+                for (const [_, value] of Object.entries(objects)) {
+                    stats.total++;
+                    
+                    if (value.type === 'function') {
+                        stats.methods++;
+                    } else if (['object', 'array', 'window', 'element', 'regexp', 'date'].includes(value.type)) {
+                        stats.objects++;
+                    }
+                    
+                    // 如果有子对象，递归统计
+                    if (typeof value.value === 'object' && value.value !== null && 
+                        !Array.isArray(value.value) && Object.keys(value.value).length > 0) {
+                        countObjects(value.value, stats);
+                    }
+                }
+            }
         });
     </script>
 </body>
 </html>
+    
