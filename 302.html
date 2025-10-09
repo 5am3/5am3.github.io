@@ -102,10 +102,7 @@
             
             let url = urlInput.value.trim();
             
-            // 检查URL是否包含协议，如果没有则添加http://
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'http://' + url;
-            }
+
             
             // 跳转到输入的URL
             window.location.href = url;
